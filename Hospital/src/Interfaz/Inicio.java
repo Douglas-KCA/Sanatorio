@@ -200,12 +200,16 @@ public class Inicio extends javax.swing.JFrame {
     private void lbl_entrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_entrarMouseClicked
         // TODO add your handling code here:
         String Usuario = txtUsuario.getText().toLowerCase();
-         if(Usuario.equals("admin")){
+        String Password = txtPassword.getText();
+         if(Usuario.equals("admin") && (Password.equals("admin"))){
                 if(ConsultaAdmin()){
                     MenuPrincipal adm = new MenuPrincipal(); 
                     adm.setVisible(true);
                     this.hide();
                 }
+            
+        }else if(Usuario.equals("operador") && (Password.equals("operador"))) {
+            
             
         }else{
                  JOptionPane.showMessageDialog(null,"Acceso Denegado","Error",JOptionPane.ERROR_MESSAGE);
