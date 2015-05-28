@@ -233,7 +233,7 @@ public class Empleados extends javax.swing.JFrame {
         txtAltura = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JLabel();
         btn_3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        profesion = new javax.swing.JComboBox();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
@@ -333,7 +333,7 @@ public class Empleados extends javax.swing.JFrame {
                                     .addComponent(jLabel16))
                                 .addGap(21, 21, 21)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(profesion, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtAltura, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel8))
@@ -366,7 +366,7 @@ public class Empleados extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(74, 74, 74)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(profesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -448,7 +448,7 @@ public class Empleados extends javax.swing.JFrame {
         jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 300, 194, -1));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel10.setText("Contraseña:");
+        jLabel10.setText("E-Mail:");
         jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 334, -1, -1));
         jPanel1.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 331, 194, -1));
 
@@ -600,7 +600,6 @@ public class Empleados extends javax.swing.JFrame {
     private javax.swing.JLabel btnGuardar;
     private javax.swing.JLabel btn_3;
     private javax.swing.ButtonGroup grupo_sexo;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -626,6 +625,7 @@ public class Empleados extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_close;
     private javax.swing.JRadioButton op_femenino;
     private javax.swing.JRadioButton op_masculino;
+    private javax.swing.JComboBox profesion;
     private javax.swing.JTextField txtAlergias;
     private javax.swing.JTextField txtAltura;
     private javax.swing.JTextField txtApellidos;
