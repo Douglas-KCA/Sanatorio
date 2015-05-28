@@ -8,6 +8,12 @@ package Interfaz;
 
 
 import Interfaz.*;
+import Conexion.Conexion;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import static java.lang.System.exit;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -20,7 +26,7 @@ import javax.swing.JPanel;
  * @author Douglas
  */
 public class Pacientes_3 extends javax.swing.JFrame {
-
+Conexion con = new Conexion();
     /**
      * Creates new form Citas
      */
@@ -84,6 +90,11 @@ public class Pacientes_3 extends javax.swing.JFrame {
         });
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/plus.png"))); // NOI18N
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel5MouseClicked(evt);
+            }
+        });
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -202,8 +213,56 @@ public class Pacientes_3 extends javax.swing.JFrame {
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
         // TODO add your handling code here:
         String alf = (JOptionPane.showInputDialog("Nuevo Padecimiento"));
-        System.out.println(alf);
+        //System.out.println(alf);
+        //String padecimiento= alf.trim();
+        if(alf == null){
+            //System.out.println("hola");
+        }else{
+            String padecimiento= alf.trim();
+            
+            String sql = "INSERT INTO PADECIMIENTO VALUES (SECUENCIA_PADECIMIENTO.nextval, '"+padecimiento+"') ";
+                
+            
+            Connection connection = con.iniciarConexion();
+            try {
+                 Statement sta = connection.createStatement();
+                 sta.executeUpdate(sql);
+                 sta.close();
+            } catch (SQLException ex) {
+
+                        JOptionPane.showMessageDialog(null,ex);
+            }
+        
+            
+        }
     }//GEN-LAST:event_jLabel12MouseClicked
+
+    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
+        // TODO add your handling code here:
+        String alf = (JOptionPane.showInputDialog("Nueva alergia"));
+        //System.out.println(alf);
+        //String padecimiento= alf.trim();
+        if(alf == null){
+            //System.out.println("hola");
+        }else{
+            String alergia= alf.trim();
+            
+            String sql = "INSERT INTO ALERGIA VALUES (SECUENCIA_ALERGIA.nextval, '"+alergia+"') ";
+                
+            
+            Connection connection = con.iniciarConexion();
+            try {
+                 Statement sta = connection.createStatement();
+                 sta.executeUpdate(sql);
+                 sta.close();
+            } catch (SQLException ex) {
+
+                        JOptionPane.showMessageDialog(null,ex);
+            }
+        
+            
+        }
+    }//GEN-LAST:event_jLabel5MouseClicked
 
     /**
      * @param args the command line arguments
