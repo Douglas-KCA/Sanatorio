@@ -102,8 +102,7 @@ public class Pacientes extends javax.swing.JFrame {
         
         ImageIcon uno=new ImageIcon(this.getClass().getResource("/Imagenes/next.png")); 
         btnGuardar.setIcon(uno);
-        btnGuardar.setText("Siguiente");
-        
+        btnGuardar.setText("Siguiente"); 
         
     }
     
@@ -182,10 +181,6 @@ public class Pacientes extends javax.swing.JFrame {
          
         txtEmail.setText(alergias);
         txtTelefono.setText(altura);
-        //txtPeso.setText(peso);
-        //txtOcupacion.setText(ocupacion);
-        //txtMedicamento.setText(medicamento);
-        
     }
     
     void Limpiar(){
@@ -517,14 +512,6 @@ public class Pacientes extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null,"Datos Personales Ingresados","Realizado",JOptionPane.INFORMATION_MESSAGE);        
                     
                  }
-                 
-                 
-                
-                //hosp.setCodigo_paciente(CodigoPersona(dpi));
-                //System.out.println("Codigo Paciente: "+hosp.getCodigo_paciente());
-                 //MenuPrincipal adm = new MenuPrincipal(); 
-                 //adm.setVisible(true);
-                 //this.hide();
               
         }else if(btnGuardar.getText().equals("Siguiente")){
             Pacientes_2 siguiente = new Pacientes_2();
