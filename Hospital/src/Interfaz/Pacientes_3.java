@@ -202,7 +202,14 @@ public class Pacientes_3 extends javax.swing.JFrame {
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
         // TODO add your handling code here:
         String alf = (JOptionPane.showInputDialog("Nuevo Padecimiento"));
-        System.out.println(alf);
+        
+        if(alf.equals(null)){
+            System.out.println(alf);
+        }else{
+            System.out.println("Noo tiene"+alf);
+        }
+        
+        
     }//GEN-LAST:event_jLabel12MouseClicked
 
     /**
