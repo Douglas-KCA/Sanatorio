@@ -32,7 +32,7 @@ public class Empleados extends javax.swing.JFrame {
         grupo_sexo.add(op_femenino);
         //btn_2.setVisible(false);
         btn_3.setVisible(false);
-        combo();
+        
         setLocationRelativeTo(null);
         
         //-------FONDO DE PANTALLA PRINCIPAL---------------
@@ -159,8 +159,8 @@ public class Empleados extends javax.swing.JFrame {
          
         
          
-        user.setText(alergias);
-        pass.setText(altura);
+        txtAlergias.setText(alergias);
+        txtAltura.setText(altura);
         //txtPeso.setText(peso);
         //txtOcupacion.setText(ocupacion);
         //txtMedicamento.setText(medicamento);
@@ -168,144 +168,51 @@ public class Empleados extends javax.swing.JFrame {
     }
     
     void Limpiar(){
-        txtPNombre.setText("");
+        txtNombre.setText("");
         txtEdad.setText("");
         txtDpi.setText("");
         txtDireccion.setText("");
         //txtTelefono.setText("");
-        pass.setText("");
+        txtAltura.setText("");
         //txtPeso.setText("");
         //txtOcupacion.setText("");
-        txtSNombre.setText("");
+        txtApellidos.setText("");
        // txtMedicamento.setText("");
         //txtEmail.setText("");
-        user.setText("");
+        txtAlergias.setText("");
         
-        txtPNombre.setEditable(true);
+        txtNombre.setEditable(true);
         txtEdad.setEditable(true);
         txtDpi.setEditable(true);
         txtDireccion.setEditable(true);
         //txtTelefono.setEditable(true);
-        pass.setEditable(true);
+        txtAltura.setEditable(true);
         //txtPeso.setEditable(true);
         //txtOcupacion.setEditable(true);
-        txtSNombre.setEditable(true);
+        txtApellidos.setEditable(true);
         //txtMedicamento.setEditable(true);
         //txtEmail.setEditable(true);
-        user.setEditable(true);
+        txtAlergias.setEditable(true);
         op_masculino.setEnabled(true);
         op_femenino.setEnabled(true);
     
     }
     
     void Bloquear(){
-        txtPNombre.setEditable(false);
+        txtNombre.setEditable(false);
         txtEdad.setEditable(false);
         txtDpi.setEditable(false);
         txtDireccion.setEditable(false);
         //txtTelefono.setEditable(false);
-        pass.setEditable(false);
+        txtAltura.setEditable(false);
         //txtPeso.setEditable(false);
         //txtOcupacion.setEditable(false);
-        txtSNombre.setEditable(false);
+        txtApellidos.setEditable(false);
         //txtMedicamento.setEditable(false);
         //txtEmail.setEditable(false);
-        user.setEditable(false);
+        txtAlergias.setEditable(false);
         op_masculino.setEnabled(false);
         op_femenino.setEnabled(false);
-    }
-    void Empleado(){
-        String dpi= txtDpi.getText().trim();
-        String pnombre= txtPNombre.getText().trim();
-        String snombre= txtSNombre.getText().trim();
-        String papellido= txtPapellido.getText().trim();
-        String sapellido= txtSapellido.getText().trim();
-        String Sexo = "";
-        if(op_masculino.isSelected()){
-             Sexo = "Masculino";
-        }else{
-            Sexo = "Femenino";
-        }
-        String edad = txtEdad.getText().trim();
-        String telefono = txttelefono.getText().trim();
-        String mail= txtemail.getText().trim();
-        String direccion = txtDireccion.getText().trim();
-        
-            //insertar tabla persona
-            String sql = "INSERT INTO PERSONA VALUES (SECUENCIA_PERSONA.nextval, '"+pnombre+"', '"+snombre+"', '"+papellido+"', '"+sapellido+"', '"+Sexo+"', '"+edad+"', '"+dpi+"', '"+direccion+"') ";
-                
-            
-            Connection connection = con.iniciarConexion();
-            try {
-                 Statement sta = connection.createStatement();
-                 sta.executeUpdate(sql);
-                 sta.close();
-            } catch (SQLException ex) {
-
-                        JOptionPane.showMessageDialog(null,ex);
-            }
-            
-            //insertar tabla informacion adicional
-                        String sql1 = "INSERT INTO INFORMACION_ADICIONAL VALUES (SECUENCIA_INFO.nextval, '"+mail+"', '"+telefono+"',SECUENCIA_PERSONA.currval) ";
-                
-            
-            //Connection connection = con.iniciarConexion();
-            try {
-                 Statement sta1 = connection.createStatement();
-                 sta1.executeUpdate(sql1);
-                 sta1.close();
-            } catch (SQLException ex) {
-
-                        JOptionPane.showMessageDialog(null,ex);
-            }
-            
-            //insertar en empleado
-            String us = user.getText().trim();
-            String pas = pass.getText().trim();
-            String prof = profesion.getSelectedItem().toString().trim();
-            String profe="";
-            int estado = 0;
-            
-            for(int i=0;i<=prof.length();i++){
-                if(((int)prof.charAt(i)!= 10)){
-                    switch(estado){
-                        case 0:
-                            if((int)prof.charAt(i)!= 46){
-                                profe=profe+prof.charAt(i);
-                                System.out.println(profe);
-                            }else{
-                                estado = 1;
-                                System.out.println("adiosito");
-                            }
-                        break;
-                        case 1:
-                            System.out.println("adios");
-                            System.out.println(prof.charAt(i));
-                         break;
-                    }
-                    
-                }
-                if(estado == 1){
-                    break;
-                }
-            }
-            System.out.println("holis");
-             String sql2 = "INSERT INTO EMPLEADO VALUES (SECUENCIA_EMPLEADO.nextval, '"+us+"', '"+pas+"',SECUENCIA_PERSONA.currval,'"+profe+"') ";
-                
-            
-            //Connection connection = con.iniciarConexion();
-            try {
-                 Statement sta2 = connection.createStatement();
-                 sta2.executeUpdate(sql2);
-                 sta2.close();
-            } catch (SQLException ex) {
-
-                        JOptionPane.showMessageDialog(null,ex);
-            }
-            
-
-            
-        
     }
 
     /**
@@ -322,8 +229,8 @@ public class Empleados extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         lbl_close = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        user = new javax.swing.JTextField();
-        pass = new javax.swing.JTextField();
+        txtAlergias = new javax.swing.JTextField();
+        txtAltura = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JLabel();
         btn_3 = new javax.swing.JLabel();
         profesion = new javax.swing.JComboBox();
@@ -336,24 +243,24 @@ public class Empleados extends javax.swing.JFrame {
         txtDpi = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtPNombre = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         op_masculino = new javax.swing.JRadioButton();
         op_femenino = new javax.swing.JRadioButton();
         jLabel5 = new javax.swing.JLabel();
         txtEdad = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        txtSNombre = new javax.swing.JTextField();
+        txtApellidos = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        txtPapellido = new javax.swing.JTextField();
+        jTextField1 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        txtSapellido = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtDireccion = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        txttelefono = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        txtemail = new javax.swing.JTextField();
+        jTextField4 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -369,7 +276,7 @@ public class Empleados extends javax.swing.JFrame {
         jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(247, 18, -1, -1));
 
         lbl_close.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/close.png"))); // NOI18N
-        lbl_close.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lbl_close.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lbl_close.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lbl_closeMouseClicked(evt);
@@ -379,15 +286,15 @@ public class Empleados extends javax.swing.JFrame {
 
         jPanel2.setOpaque(false);
 
-        user.setEditable(false);
+        txtAlergias.setEditable(false);
 
-        pass.setEditable(false);
+        txtAltura.setEditable(false);
 
         btnGuardar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/save.png"))); // NOI18N
         btnGuardar.setText("Guardar");
-        btnGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnGuardarMouseClicked(evt);
@@ -398,18 +305,7 @@ public class Empleados extends javax.swing.JFrame {
         btn_3.setForeground(new java.awt.Color(255, 255, 255));
         btn_3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Edit-48.png"))); // NOI18N
         btn_3.setText("Editar");
-        btn_3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btn_3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btn_3MouseClicked(evt);
-            }
-        });
-
-        profesion.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                profesionFocusGained(evt);
-            }
-        });
+        btn_3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel12.setText("Profesion:");
@@ -421,11 +317,6 @@ public class Empleados extends javax.swing.JFrame {
         jLabel16.setText("Contraseña:");
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Plus-32.png"))); // NOI18N
-        jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel8MouseClicked(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -443,13 +334,13 @@ public class Empleados extends javax.swing.JFrame {
                                 .addGap(21, 21, 21)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(profesion, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(pass, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtAltura, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel8))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel13)
                                 .addGap(43, 43, 43)
-                                .addComponent(user, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(11, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(13, 13, 13)
@@ -463,11 +354,11 @@ public class Empleados extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(pass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtAltura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel16))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel12)
@@ -501,7 +392,7 @@ public class Empleados extends javax.swing.JFrame {
         jPanel1.add(txtDpi, new org.netbeans.lib.awtextra.AbsoluteConstraints(133, 21, 152, -1));
 
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/search.png"))); // NOI18N
-        btnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnBuscarMouseClicked(evt);
@@ -512,18 +403,7 @@ public class Empleados extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Primer Nombre:");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 57, -1, -1));
-
-        txtPNombre.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtPNombreFocusLost(evt);
-            }
-        });
-        txtPNombre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPNombreActionPerformed(evt);
-            }
-        });
-        jPanel1.add(txtPNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 54, 194, -1));
+        jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 54, 194, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("Sexo:");
@@ -545,23 +425,17 @@ public class Empleados extends javax.swing.JFrame {
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel15.setText("Segundo Nombre:");
         jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 95, -1, -1));
-        jPanel1.add(txtSNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 92, 194, -1));
+        jPanel1.add(txtApellidos, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 92, 194, -1));
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel14.setText("Primer Apellido:");
         jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 133, -1, -1));
-
-        txtPapellido.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtPapellidoFocusLost(evt);
-            }
-        });
-        jPanel1.add(txtPapellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 130, 194, -1));
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 130, 194, -1));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel7.setText("Segundo Apellido:");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 171, -1, -1));
-        jPanel1.add(txtSapellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 168, 194, -1));
+        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 168, 194, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel6.setText("Direccion:");
@@ -571,12 +445,12 @@ public class Empleados extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel9.setText("Telefono:");
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 303, -1, -1));
-        jPanel1.add(txttelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 300, 194, -1));
+        jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 300, 194, -1));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel10.setText("E-mail:");
+        jLabel10.setText("E-Mail:");
         jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 334, -1, -1));
-        jPanel1.add(txtemail, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 331, 194, -1));
+        jPanel1.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 331, 194, -1));
 
         jPanel3.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(34, 88, -1, 360));
 
@@ -592,27 +466,27 @@ public class Empleados extends javax.swing.JFrame {
 
     private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
         // TODO add your handling code here:
-        
-        //if(btnGuardar.getText().equals("Guardar")){
+        /*
+        if(btnGuardar.getText().equals("Guardar")){
             String dpi = txtDpi.getText().trim();
 
-            if(txtPNombre.getText().isEmpty() || txtEdad.getText().isEmpty() ||
-               txtDireccion.getText().isEmpty() || txttelefono.getText().isEmpty()  || txtSNombre.getText().isEmpty() || txtemail.getText().isEmpty() ||
-               txtPapellido.getText().isEmpty()  || txtSapellido.getText().isEmpty()){
+            if(txtNombre.getText().isEmpty() || txtEdad.getText().isEmpty() || txtDpi.getText().isEmpty() ||
+               txtDireccion.getText().isEmpty() || txtTelefono.getText().isEmpty()  || txtAltura.getText().isEmpty() || txtPeso.getText().isEmpty() ||
+               txtOcupacion.getText().isEmpty()  || txtApellidos.getText().isEmpty()){
 
                 JOptionPane.showMessageDialog(null,"Por Favor llene todos los campos","Error",JOptionPane.ERROR_MESSAGE);
 
             }else{
-                Empleado();
-                //InsertarPaciente(CodigoPersona(dpi));
-                JOptionPane.showMessageDialog(null,"Empleado Registrado","Realizado",JOptionPane.INFORMATION_MESSAGE);
+                InsertarPersona();
+                InsertarPaciente(CodigoPersona(dpi));
+                JOptionPane.showMessageDialog(null,"Paciente Registrado","Realizado",JOptionPane.INFORMATION_MESSAGE);
                  //MenuPrincipal adm = new MenuPrincipal(); 
                  //adm.setVisible(true);
                  this.hide();
             }  
-        //}else{
+        }else{
             
-        //}   */
+        }   */
     }//GEN-LAST:event_btnGuardarMouseClicked
 
     private void txtDpiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDpiKeyTyped
@@ -625,20 +499,18 @@ public class Empleados extends javax.swing.JFrame {
         boolean existe = false;
         String codigo_persona= "";
         String sexo="";
-        String pnombre="";
-        String snombre="";
+        String nombre="";
         String edad="";
         String dpi=txtDpi.getText().trim();
-        //String telefono="";
-        //String email="";
-        String papellido="";
-        String sapellido="";
+        String telefono="";
+        String email="";
+        String apellido="";
         String direccion = "";
         
         
         Connection connection = con.iniciarConexion();
         
-         String sql3 = "SELECT CODIGO_PERSONA, NOMBRE, SEGUNDO_NOMBRE, PRIMER_APELLIDO, SEGUNDO_APELLIDO, SEXO, EDAD, DIRECCION FROM PERSONA WHERE DPI = '"+dpi+"'";
+         String sql3 = "SELECT CODIGO_PERSONA, SEXO, NOMBRE, EDAD, DIRECCION, TELEFONO, EMAIL, APELLIDO FROM PERSONA WHERE DPI = '"+dpi+"'";
          
          try {
             Statement st2 = connection.createStatement();
@@ -647,14 +519,13 @@ public class Empleados extends javax.swing.JFrame {
             while (rs2.next()){
                  existe = true;
                  codigo_persona = rs2.getString("CODIGO_PERSONA");
-                 pnombre = (rs2.getString("NOMBRE")).trim();
-                 snombre = (rs2.getString("SEGUNDO_NOMBRE")).trim();
-                 papellido = (rs2.getString("PRIMER_APELLIDO")).trim();
-                 sapellido = (rs2.getString("SEGUNDO_APELLIDO")).trim();
                  sexo = (rs2.getString("SEXO")).trim();
-                 edad = (rs2.getString("EDAD"));
+                 nombre = (rs2.getString("NOMBRE")).trim();
+                 edad = (rs2.getString("EDAD")).trim();
+                 telefono = (rs2.getString("TELEFONO")).trim();
+                 email = (rs2.getString("EMAIL"));
                  direccion = (rs2.getString("DIRECCION")).trim();
-                 
+                 apellido = (rs2.getString("APELLIDO")).trim();
             }
                         
         } catch (SQLException ex) {
@@ -667,10 +538,8 @@ public class Empleados extends javax.swing.JFrame {
             //btn_2.setVisible(true);
             btn_3.setVisible(true);
             
-            txtPNombre.setText(pnombre);
-            txtSNombre.setText(snombre);
-            txtPapellido.setText(papellido);
-            txtSapellido.setText(sapellido);
+            txtNombre.setText(nombre);
+            txtApellidos.setText(apellido);
             if(sexo.equals("Masculino")){
                 op_masculino.setSelected(true);
             }else{
@@ -681,150 +550,14 @@ public class Empleados extends javax.swing.JFrame {
             //txtTelefono.setText(telefono);
             //txtEmail.setText(email);
             
-            //LlenarCampos(codigo_persona);
-            //Bloquear();
-            txttelefono.setEditable(false);
-            txttelefono.setEnabled(false);
-            txtemail.setEditable(false);
-            txtemail.setEnabled(false);
-            txtDpi.setEditable(false);
-            txtDpi.setEnabled(false);
-            pass.setEditable(false);
-            pass.setEnabled(false);
-            user.setEditable(false);
-            user.setEnabled(false);
+            LlenarCampos(codigo_persona);
+            Bloquear();
           
             
         }else{
             JOptionPane.showMessageDialog(null,"Paciente No Encontrado","Mensaje",JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnBuscarMouseClicked
-
-    private void txtPNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPNombreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPNombreActionPerformed
-
-    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
-        // TODO add your handling code here:
-         String alf = (JOptionPane.showInputDialog("Nueva profesion"));
-        //System.out.println(alf);
-        //String padecimiento= alf.trim();
-        if(alf == null){
-            //System.out.println("hola");
-        }else{
-            String profesion= alf.trim();
-            
-            String sql = "INSERT INTO PROFESION VALUES (SECUENCIA_PROFESION.nextval, '"+profesion+"') ";
-                
-            
-            Connection connection = con.iniciarConexion();
-            try {
-                 Statement sta = connection.createStatement();
-                 sta.executeUpdate(sql);
-                 sta.close();
-            } catch (SQLException ex) {
-
-                        JOptionPane.showMessageDialog(null,ex);
-            }
-            combo();
-        
-            
-        }
-    }//GEN-LAST:event_jLabel8MouseClicked
-
-   void combo(){
-        Connection connection = con.iniciarConexion();
-        profesion.removeAllItems();
-        
-        String codigo = "";
-        String nombre = "";
-        
-        
-        String sql3 = "SELECT CODIGO_PROFESION,NOMBRE FROM PROFESION";
-         
-         try {
-            Statement st2 = connection.createStatement();
-            ResultSet rs2 = st2.executeQuery(sql3);
-                    
-            while (rs2.next()){
-                 
-                 codigo = rs2.getString("CODIGO_PROFESION").trim();
-                 nombre = (rs2.getString("NOMBRE")).trim();
-                 
-                 profesion.addItem(codigo+". "+nombre);
-                 codigo = "";
-                 nombre = "";
-                 
-            }
-                        
-        } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, ex);
-        }
-   }     
-    private void profesionFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_profesionFocusGained
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_profesionFocusGained
-
-    private void txtPNombreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPNombreFocusLost
-        // TODO add your handling code here:
-        String nombre= txtPNombre.getText().trim();
-        user.setText(nombre);
-        pass.setText(nombre);
-    }//GEN-LAST:event_txtPNombreFocusLost
-
-    private void txtPapellidoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPapellidoFocusLost
-        // TODO add your handling code here:
-        String apellido = txtPapellido.getText().trim();
-        String us = user.getText().trim();
-        String pas = pass.getText().trim();
-        
-        user.setText(us+""+apellido);
-        pass.setText(us+""+apellido);
-    }//GEN-LAST:event_txtPapellidoFocusLost
-
-    private void btn_3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_3MouseClicked
-        // TODO add your handling code here:
-        String dpi= txtDpi.getText().trim();
-        String pnombre = txtPNombre.getText().trim();
-        String snombre = txtSNombre.getText().trim();
-        String papellido = txtPapellido.getText().trim();
-        String sapellido = txtSapellido.getText().trim();
-        String Sexo = "";
-        if(op_masculino.isSelected()){
-             Sexo = "Masculino";
-        }else{
-            Sexo = "Femenino";
-        }
-        String edad = txtEdad.getText().trim();
-        String direccion = txtDireccion.getText().trim();
-        
-            
-            String sql = "UPDATE PERSONA SET NOMBRE='"+pnombre+"', SEGUNDO_NOMBRE = '"+snombre+"', PRIMER_APELLIDO = '"+papellido+"', SEGUNDO_APELLIDO = '"+sapellido+"', SEXO = '"+Sexo+"', EDAD = '"+edad+"', DIRECCION = '"+direccion+"' WHERE DPI = '"+dpi+"'";
-                
-            
-            Connection connection = con.iniciarConexion();
-            try {
-                 Statement sta = connection.createStatement();
-                 sta.executeUpdate(sql);
-                 sta.close();
-            } catch (SQLException ex) {
-
-                        JOptionPane.showMessageDialog(null,ex);
-            }
-            JOptionPane.showMessageDialog(null,"Empleado Actualizado","Realizado",JOptionPane.INFORMATION_MESSAGE);
-            txtPNombre.setText("");
-            txtSNombre.setText("");
-            txtPapellido.setText("");
-            txtSapellido.setText("");
-            txtDpi.setText("");
-            txtEdad.setText("");
-            txtDireccion.setText("");
-            pass.setText("");
-            user.setText("");
-            btnGuardar.setVisible(true);
-        
-    }//GEN-LAST:event_btn_3MouseClicked
 
     /**
      * @param args the command line arguments
@@ -885,20 +618,20 @@ public class Empleados extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
     private javax.swing.JLabel lbl_close;
     private javax.swing.JRadioButton op_femenino;
     private javax.swing.JRadioButton op_masculino;
-    private javax.swing.JTextField pass;
     private javax.swing.JComboBox profesion;
+    private javax.swing.JTextField txtAlergias;
+    private javax.swing.JTextField txtAltura;
+    private javax.swing.JTextField txtApellidos;
     private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtDpi;
     private javax.swing.JTextField txtEdad;
-    private javax.swing.JTextField txtPNombre;
-    private javax.swing.JTextField txtPapellido;
-    private javax.swing.JTextField txtSNombre;
-    private javax.swing.JTextField txtSapellido;
-    private javax.swing.JTextField txtemail;
-    private javax.swing.JTextField txttelefono;
-    private javax.swing.JTextField user;
+    private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

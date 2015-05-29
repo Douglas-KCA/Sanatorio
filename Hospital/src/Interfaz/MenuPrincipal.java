@@ -162,7 +162,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
     private void submenu_nuevopacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submenu_nuevopacienteActionPerformed
         // TODO add your handling code here:
-        Pacientes ver = new Pacientes();
+        Citas ver = new Citas();
         ver.setVisible(true);
         //this.hide();
     }//GEN-LAST:event_submenu_nuevopacienteActionPerformed
