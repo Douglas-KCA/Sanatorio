@@ -12,6 +12,7 @@ import Interfaz.Inicio;
  * @author Douglas
  */
 public class Hospital {
+       private static String codigo_paciente;
 
     /**
      * @param args the command line arguments
@@ -20,6 +21,20 @@ public class Hospital {
         // TODO code application logic here
         Inicio ver = new Inicio();
         ver.setVisible(true);
+    }
+
+    /**
+     * @return the codigo_paciente
+     */
+    public static String getCodigo_paciente() {
+        return codigo_paciente;
+    }
+
+    /**
+     * @param aCodigo_paciente the codigo_paciente to set
+     */
+    public static void setCodigo_paciente(String aCodigo_paciente) {
+        codigo_paciente = aCodigo_paciente;
     }
     
 }

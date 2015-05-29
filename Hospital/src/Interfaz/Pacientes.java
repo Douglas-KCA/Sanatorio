@@ -6,6 +6,7 @@
 package Interfaz;
 
 import Conexion.Conexion;
+import hospital.Hospital;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,6 +24,7 @@ import javax.swing.JPanel;
 public class Pacientes extends javax.swing.JFrame {
     
     Conexion con = new Conexion();
+    int contador = 0;
     /**
      * Creates new form Pacientes
      */
@@ -31,7 +33,7 @@ public class Pacientes extends javax.swing.JFrame {
         grupo_sexo.add(op_masculino);
         grupo_sexo.add(op_femenino);
         //btn_2.setVisible(false);
-        btn_3.setVisible(false);
+        btn_Agregar.setVisible(false);
         
         setLocationRelativeTo(null);
         
@@ -43,24 +45,27 @@ public class Pacientes extends javax.swing.JFrame {
         getLayeredPane().add(fondo,JLayeredPane.FRAME_CONTENT_LAYER); 
         fondo.setBounds(0,0,uno.getIconWidth(),uno.getIconHeight());
     }
-    /*
-    void InsertarPersona(){
+    
+    void InsertarPersona(String dpi){
         String Sexo = "";
         if(op_masculino.isSelected()){
              Sexo = "Masculino";
         }else{
             Sexo = "Femenino";
         }
-        String nombre = txtNombre.getText().trim();
-        String apellido = txtApellidos.getText().trim();
-        String edad = txtEdad.getText().trim();
-        String dpi = txtDpi.getText().trim();
-        String direccion = txtDireccion.getText().trim();
-        //String telefono = txtTelefono.getText().trim();
-       // String email = txtEmail.getText().trim();
+        
+        String PrimerNombre = txtPrimerNombre.getText().trim();
+        String SegundoNombre = txtSegundoNombre.getText().trim();
+        String PrimerApellido = txtPrimerApellido.getText().trim();
+        String SegundoApellido = txtSegundoApellido.getText().trim();
+        String Edad = txtEdad.getText().trim();
+        String Dpi = txtDpi.getText().trim();
+        String Direccion = txtDireccion.getText().trim();
+        String Telefono = txtTelefono.getText().trim();
+        String Email = txtEmail.getText().trim();
         
         
-        String sql6 = "INSERT INTO PERSONA VALUES (SECUENCIA_PERSONA.nextval, '"+Sexo+"','"+nombre+"','"+edad+"','"+dpi+"','"+direccion+"','"+telefono+"','"+email+"','"+apellido+"') ";
+        String sql6 = "INSERT INTO PERSONA VALUES (SECUENCIA_PERSONA.nextval, '"+PrimerNombre+"','"+SegundoNombre+"','"+PrimerApellido+"','"+SegundoApellido+"','"+Sexo+"','"+Edad+"','"+Dpi+"','"+Direccion+"') ";
                 
         
         Connection connection = con.iniciarConexion();
@@ -73,8 +78,34 @@ public class Pacientes extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null,ex);
         }
         
+        String codigo_persona = CodigoPersona(dpi);
+        String sql = "INSERT INTO INFORMACION_ADICIONAL VALUES (secuencia_informacion.nextval,'"+Email+"','"+Telefono+"','"+codigo_persona+"')";
+       
+        try {
+             Statement sta = connection.createStatement();
+             sta.executeUpdate(sql);
+             sta.close();
+        } catch (SQLException ex) {
+                    
+                    JOptionPane.showMessageDialog(null,ex);
+        }
+        
+        
+        txtPrimerNombre.setEditable(false);
+        txtSegundoNombre.setEditable(false);
+        txtPrimerApellido.setEditable(false);
+        txtEdad.setEditable(false);
+        txtDireccion.setEditable(false);
+        btn_Agregar.setVisible(true);
+        txtEmail.setText("");
+        txtTelefono.setText("");
+        
+        ImageIcon uno=new ImageIcon(this.getClass().getResource("/Imagenes/next.png")); 
+        btnGuardar.setIcon(uno);
+        btnGuardar.setText("Siguiente"); 
+        
     }
-    */
+    
     String CodigoPersona(String dpi){
         String CodigoPersona="";
         
@@ -96,24 +127,13 @@ public class Pacientes extends javax.swing.JFrame {
         
         return CodigoPersona;
     }
-    /*
-    void InsertarPaciente(String CodigoPersona){
+    
+    void InsertarInfoAdicional(String CodigoPersona){
       
-        String alergias = txtAlergias.getText().trim();
-        String altura = txtAltura.getText().trim();
-        //String peso = txtPeso.getText().trim();
-        //String ocupacion = txtOcupacion.getText().trim();
-        //String medicamento = txtMedicamento.getText().trim();
-        if(alergias.isEmpty()){
-            alergias= "-";
-        }
-        if(medicamento.isEmpty()){
-            medicamento="-";
-        }
+        String Email = txtEmail.getText().trim();
+        String Telefono = txtTelefono.getText().trim();
         
-        
-        
-        String sql = "INSERT INTO PACIENTE VALUES (secuencia_paciente.nextval,'"+alergias+"','"+altura+"','"+peso+"','"+ocupacion+"','"+medicamento+"','"+CodigoPersona+"')";
+        String sql = "INSERT INTO INFORMACION_ADICIONAL VALUES (secuencia_informacion.nextval,'"+Email+"','"+Telefono+"','"+CodigoPersona+"')";
                 
         
         Connection connection = con.iniciarConexion();
@@ -127,7 +147,7 @@ public class Pacientes extends javax.swing.JFrame {
         }
         
     }
-    */
+    
     void LlenarCampos(String codigo){
         
         Connection connection = con.iniciarConexion();
@@ -159,58 +179,54 @@ public class Pacientes extends javax.swing.JFrame {
          
         
          
-        txtAlergias.setText(alergias);
-        txtAltura.setText(altura);
-        //txtPeso.setText(peso);
-        //txtOcupacion.setText(ocupacion);
-        //txtMedicamento.setText(medicamento);
-        
+        txtEmail.setText(alergias);
+        txtTelefono.setText(altura);
     }
     
     void Limpiar(){
-        txtNombre.setText("");
+        txtPrimerNombre.setText("");
         txtEdad.setText("");
         txtDpi.setText("");
         txtDireccion.setText("");
         //txtTelefono.setText("");
-        txtAltura.setText("");
+        txtTelefono.setText("");
         //txtPeso.setText("");
         //txtOcupacion.setText("");
-        txtApellidos.setText("");
+        txtSegundoNombre.setText("");
        // txtMedicamento.setText("");
         //txtEmail.setText("");
-        txtAlergias.setText("");
+        txtEmail.setText("");
         
-        txtNombre.setEditable(true);
+        txtPrimerNombre.setEditable(true);
         txtEdad.setEditable(true);
         txtDpi.setEditable(true);
         txtDireccion.setEditable(true);
         //txtTelefono.setEditable(true);
-        txtAltura.setEditable(true);
+        txtTelefono.setEditable(true);
         //txtPeso.setEditable(true);
         //txtOcupacion.setEditable(true);
-        txtApellidos.setEditable(true);
+        txtSegundoNombre.setEditable(true);
         //txtMedicamento.setEditable(true);
         //txtEmail.setEditable(true);
-        txtAlergias.setEditable(true);
+        txtEmail.setEditable(true);
         op_masculino.setEnabled(true);
         op_femenino.setEnabled(true);
     
     }
     
     void Bloquear(){
-        txtNombre.setEditable(false);
+        txtPrimerNombre.setEditable(false);
         txtEdad.setEditable(false);
         txtDpi.setEditable(false);
         txtDireccion.setEditable(false);
         //txtTelefono.setEditable(false);
-        txtAltura.setEditable(false);
+        txtTelefono.setEditable(false);
         //txtPeso.setEditable(false);
         //txtOcupacion.setEditable(false);
-        txtApellidos.setEditable(false);
+        txtSegundoNombre.setEditable(false);
         //txtMedicamento.setEditable(false);
         //txtEmail.setEditable(false);
-        txtAlergias.setEditable(false);
+        txtEmail.setEditable(false);
         op_masculino.setEnabled(false);
         op_femenino.setEnabled(false);
     }
@@ -230,32 +246,30 @@ public class Pacientes extends javax.swing.JFrame {
         lbl_close = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        txtAlergias = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        txtAltura = new javax.swing.JTextField();
+        txtTelefono = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtDireccion = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JLabel();
-        btn_3 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
+        btn_Agregar = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtDpi = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtNombre = new javax.swing.JTextField();
+        txtPrimerNombre = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         op_masculino = new javax.swing.JRadioButton();
         op_femenino = new javax.swing.JRadioButton();
         jLabel5 = new javax.swing.JLabel();
         txtEdad = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        txtApellidos = new javax.swing.JTextField();
+        txtSegundoNombre = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtPrimerApellido = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtSegundoApellido = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -276,18 +290,25 @@ public class Pacientes extends javax.swing.JFrame {
                 lbl_closeMouseClicked(evt);
             }
         });
-        jPanel3.add(lbl_close, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 10, -1, -1));
+        jPanel3.add(lbl_close, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 10, -1, -1));
 
         jPanel2.setOpaque(false);
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel9.setText("E-mail:");
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 52, -1, -1));
+        jPanel2.add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(108, 49, 194, -1));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel10.setText("Telefono:");
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 89, -1, -1));
+        jPanel2.add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(108, 86, 194, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel6.setText("Direccion:");
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 14, -1, -1));
+        jPanel2.add(txtDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(108, 11, 194, -1));
 
         btnGuardar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
@@ -299,75 +320,21 @@ public class Pacientes extends javax.swing.JFrame {
                 btnGuardarMouseClicked(evt);
             }
         });
+        jPanel2.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 124, -1, -1));
 
-        btn_3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btn_3.setForeground(new java.awt.Color(255, 255, 255));
-        btn_3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Edit-48.png"))); // NOI18N
-        btn_3.setText("Agregar");
-        btn_3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_Agregar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btn_Agregar.setForeground(new java.awt.Color(255, 255, 255));
+        btn_Agregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Edit-48.png"))); // NOI18N
+        btn_Agregar.setText("Agregar");
+        btn_Agregar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_Agregar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_AgregarMouseClicked(evt);
+            }
+        });
+        jPanel2.add(btn_Agregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(157, 132, 110, -1));
 
-        jLabel8.setText("Editar");
-
-        jLabel11.setText("Siguiente");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel10))
-                        .addGap(43, 43, 43)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtAltura, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnGuardar)
-                            .addComponent(jLabel8))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btn_3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11))
-                        .addGap(32, 32, 32))))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addComponent(jLabel9))
-                    .addComponent(txtAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(txtAltura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnGuardar)
-                    .addComponent(btn_3))
-                .addGap(26, 26, 26)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel11))
-                .addGap(43, 43, 43))
-        );
-
-        jPanel3.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(387, 88, -1, 270));
+        jPanel3.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(387, 88, 330, 270));
 
         jPanel1.setOpaque(false);
 
@@ -422,7 +389,7 @@ public class Pacientes extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtPrimerNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -448,9 +415,9 @@ public class Pacientes extends javax.swing.JFrame {
                                     .addComponent(jLabel7))
                                 .addGap(21, 21, 21)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtApellidos)
-                                    .addComponent(jTextField1)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE))))
+                                    .addComponent(txtSegundoNombre)
+                                    .addComponent(txtPrimerApellido)
+                                    .addComponent(txtSegundoApellido, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -467,20 +434,20 @@ public class Pacientes extends javax.swing.JFrame {
                             .addComponent(txtDpi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPrimerNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSegundoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPrimerApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSegundoApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -504,7 +471,7 @@ public class Pacientes extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 713, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 742, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -524,31 +491,39 @@ public class Pacientes extends javax.swing.JFrame {
 
     private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
         // TODO add your handling code here:
-        /*
+        Hospital hosp = new Hospital();
+        
+        
+        
         if(btnGuardar.getText().equals("Guardar")){
             String dpi = txtDpi.getText().trim();
 
-            if(txtNombre.getText().isEmpty() || txtEdad.getText().isEmpty() || txtDpi.getText().isEmpty() ||
-               txtDireccion.getText().isEmpty() || txtTelefono.getText().isEmpty()  || txtAltura.getText().isEmpty() || txtPeso.getText().isEmpty() ||
-               txtOcupacion.getText().isEmpty()  || txtApellidos.getText().isEmpty()){
+            if(txtPrimerNombre.getText().isEmpty() || txtSegundoNombre.getText().isEmpty() || txtEdad.getText().isEmpty() || txtDpi.getText().isEmpty() ||
+               txtPrimerApellido.getText().isEmpty() || txtSegundoApellido.getText().isEmpty() ||  txtDireccion.getText().isEmpty() || txtTelefono.getText().isEmpty() || txtEmail.getText().isEmpty()){
 
                 JOptionPane.showMessageDialog(null,"Por Favor llene todos los campos","Error",JOptionPane.ERROR_MESSAGE);
 
             }else{
-                InsertarPersona();
-                InsertarPaciente(CodigoPersona(dpi));
-                JOptionPane.showMessageDialog(null,"Paciente Registrado","Realizado",JOptionPane.INFORMATION_MESSAGE);
-                 //MenuPrincipal adm = new MenuPrincipal(); 
-                 //adm.setVisible(true);
-                 this.hide();
-            }  
-        }else{
-            
-        }   */
+               
+                 
+                    InsertarPersona(dpi);
+                    //InsertarInfoAdicional(CodigoPersona(dpi));
+                    
+                    JOptionPane.showMessageDialog(null,"Datos Personales Ingresados","Realizado",JOptionPane.INFORMATION_MESSAGE);        
+                    
+                 }
+              
+        }else if(btnGuardar.getText().equals("Siguiente")){
+            Pacientes_2 siguiente = new Pacientes_2();
+            siguiente.setVisible(true);
+            this.hide();
+        }   
     }//GEN-LAST:event_btnGuardarMouseClicked
 
     private void txtDpiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDpiKeyTyped
         // TODO add your handling code here:
+        
+                    
     }//GEN-LAST:event_txtDpiKeyTyped
 
     private void btnBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseClicked
@@ -559,7 +534,7 @@ public class Pacientes extends javax.swing.JFrame {
         String sexo="";
         String nombre="";
         String edad="";
-        String dpi=txtDpi.getText().trim();
+        String dpi= txtDpi.getText().trim();
         String telefono="";
         String email="";
         String apellido="";
@@ -594,10 +569,10 @@ public class Pacientes extends javax.swing.JFrame {
             //btnGuardar.setEnabled(false);
             btnGuardar.setVisible(false);
             //btn_2.setVisible(true);
-            btn_3.setVisible(true);
+            btn_Agregar.setVisible(true);
             
-            txtNombre.setText(nombre);
-            txtApellidos.setText(apellido);
+            txtPrimerNombre.setText(nombre);
+            txtSegundoNombre.setText(apellido);
             if(sexo.equals("Masculino")){
                 op_masculino.setSelected(true);
             }else{
@@ -616,6 +591,15 @@ public class Pacientes extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"Paciente No Encontrado","Mensaje",JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnBuscarMouseClicked
+
+    private void btn_AgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_AgregarMouseClicked
+        // TODO add your handling code here:
+        String dpi = txtDpi.getText().trim();
+        InsertarInfoAdicional(CodigoPersona(dpi));
+        JOptionPane.showMessageDialog(null,"Telefono, e-mail ingresados","Realizado",JOptionPane.INFORMATION_MESSAGE);        
+        txtEmail.setText("");
+        txtTelefono.setText("");
+    }//GEN-LAST:event_btn_AgregarMouseClicked
 
     /**
      * @param args the command line arguments
@@ -655,11 +639,10 @@ public class Pacientes extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btnBuscar;
     private javax.swing.JLabel btnGuardar;
-    private javax.swing.JLabel btn_3;
+    private javax.swing.JLabel btn_Agregar;
     private javax.swing.ButtonGroup grupo_sexo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
@@ -668,22 +651,21 @@ public class Pacientes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel lbl_close;
     private javax.swing.JRadioButton op_femenino;
     private javax.swing.JRadioButton op_masculino;
-    private javax.swing.JTextField txtAlergias;
-    private javax.swing.JTextField txtAltura;
-    private javax.swing.JTextField txtApellidos;
     private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtDpi;
     private javax.swing.JTextField txtEdad;
-    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtPrimerApellido;
+    private javax.swing.JTextField txtPrimerNombre;
+    private javax.swing.JTextField txtSegundoApellido;
+    private javax.swing.JTextField txtSegundoNombre;
+    private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 }
