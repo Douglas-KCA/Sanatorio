@@ -13,6 +13,7 @@ import Interfaz.Inicio;
  */
 public class Hospital {
        private static String codigo_paciente;
+       private static String codigo_persona;
 
     /**
      * @param args the command line arguments
@@ -35,6 +36,20 @@ public class Hospital {
      */
     public static void setCodigo_paciente(String aCodigo_paciente) {
         codigo_paciente = aCodigo_paciente;
+    }
+
+    /**
+     * @return the codigo_persona
+     */
+    public static String getCodigo_persona() {
+        return codigo_persona;
+    }
+
+    /**
+     * @param aCodigo_persona the codigo_persona to set
+     */
+    public static void setCodigo_persona(String aCodigo_persona) {
+        codigo_persona = aCodigo_persona;
     }
     
 }

@@ -32,9 +32,7 @@ public class Pacientes extends javax.swing.JFrame {
         initComponents();
         grupo_sexo.add(op_masculino);
         grupo_sexo.add(op_femenino);
-        //btn_2.setVisible(false);
         btn_Agregar.setVisible(false);
-        
         setLocationRelativeTo(null);
         
         //-------FONDO DE PANTALLA PRINCIPAL---------------
@@ -94,6 +92,7 @@ public class Pacientes extends javax.swing.JFrame {
         txtPrimerNombre.setEditable(false);
         txtSegundoNombre.setEditable(false);
         txtPrimerApellido.setEditable(false);
+        txtSegundoApellido.setEditable(false);
         txtEdad.setEditable(false);
         txtDireccion.setEditable(false);
         btn_Agregar.setVisible(true);
@@ -104,10 +103,13 @@ public class Pacientes extends javax.swing.JFrame {
         btnGuardar.setIcon(uno);
         btnGuardar.setText("Siguiente"); 
         
+        txtEmail.requestFocus();
+        
     }
     
     String CodigoPersona(String dpi){
         String CodigoPersona="";
+        Hospital hosp = new Hospital();
         
          Connection connection = con.iniciarConexion();
         
@@ -119,6 +121,7 @@ public class Pacientes extends javax.swing.JFrame {
                     
             while (rs2.next()){
                 CodigoPersona = rs2.getString("CODIGO_PERSONA");
+                hosp.setCodigo_persona(CodigoPersona);
             }
                         
         } catch (SQLException ex) {
@@ -148,69 +151,45 @@ public class Pacientes extends javax.swing.JFrame {
         
     }
     
-    void LlenarCampos(String codigo){
+    void LlenarInfoAdicional(String codigo_persona){
         
         Connection connection = con.iniciarConexion();
         
-        String alergias = "";
-        String altura = "";
-        String peso = "";
-        String ocupacion = "";
-        String medicamento = "";
+        String telefono = "";
+        String email = "";
         
-        String sql3 = "SELECT ALERGIAS, ALTURA, PESO, OCUPACION, MEDICAMENTO FROM PACIENTE WHERE CODIGO_PACIENTE = '"+codigo+"'";
+        String sql3 = "SELECT EMAIL, TELEFONO FROM INFORMACION_ADICIONAL WHERE CODIGO_PERSONA = '"+codigo_persona+"'";
          
          try {
             Statement st2 = connection.createStatement();
             ResultSet rs2 = st2.executeQuery(sql3);
                     
             while (rs2.next()){
-                 
-                 alergias = rs2.getString("ALERGIAS").trim();
-                 altura = (rs2.getString("ALTURA")).trim();
-                 peso = (rs2.getString("PESO")).trim();
-                 ocupacion = (rs2.getString("OCUPACION")).trim();
-                 medicamento = rs2.getString("MEDICAMENTO").trim();
+                 telefono = rs2.getString("TELEFONO").trim();
+                 email = (rs2.getString("EMAIL")).trim();
             }
                         
         } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, ex);
         }
          
-        
-         
-        txtEmail.setText(alergias);
-        txtTelefono.setText(altura);
+        txtEmail.setText(email);
+        txtTelefono.setText(telefono);
     }
     
     void Limpiar(){
         txtPrimerNombre.setText("");
+        txtSegundoNombre.setText("");
+        txtPrimerApellido.setText("");
+        txtSegundoApellido.setText("");
         txtEdad.setText("");
         txtDpi.setText("");
         txtDireccion.setText("");
-        //txtTelefono.setText("");
         txtTelefono.setText("");
-        //txtPeso.setText("");
-        //txtOcupacion.setText("");
         txtSegundoNombre.setText("");
-       // txtMedicamento.setText("");
-        //txtEmail.setText("");
         txtEmail.setText("");
-        
-        txtPrimerNombre.setEditable(true);
-        txtEdad.setEditable(true);
-        txtDpi.setEditable(true);
-        txtDireccion.setEditable(true);
-        //txtTelefono.setEditable(true);
-        txtTelefono.setEditable(true);
-        //txtPeso.setEditable(true);
-        //txtOcupacion.setEditable(true);
-        txtSegundoNombre.setEditable(true);
-        //txtMedicamento.setEditable(true);
-        //txtEmail.setEditable(true);
-        txtEmail.setEditable(true);
-        op_masculino.setEnabled(true);
-        op_femenino.setEnabled(true);
+        op_masculino.setSelected(false);
+        op_femenino.setSelected(false);
     
     }
     
@@ -229,6 +208,57 @@ public class Pacientes extends javax.swing.JFrame {
         txtEmail.setEditable(false);
         op_masculino.setEnabled(false);
         op_femenino.setEnabled(false);
+    }
+    
+    void Modificar(){
+        String Sexo = "";
+        if(op_masculino.isSelected()){
+             Sexo = "Masculino";
+        }else{
+            Sexo = "Femenino";
+        }
+        
+        String PrimerNombre = txtPrimerNombre.getText().trim();
+        String SegundoNombre = txtSegundoNombre.getText().trim();
+        String PrimerApellido = txtPrimerApellido.getText().trim();
+        String SegundoApellido = txtSegundoApellido.getText().trim();
+        String Edad = txtEdad.getText().trim();
+        String Dpi = txtDpi.getText().trim();
+        String Direccion = txtDireccion.getText().trim();
+       
+        
+        String Telefono = txtTelefono.getText().trim();
+        String Email = txtEmail.getText().trim();
+        
+        
+        String sql6 = "UPDATE PERSONA SET NOMBRE='"+PrimerNombre+"', SEGUNDO_NOMBRE = '"+SegundoNombre+"', PRIMER_APELLIDO = '"+PrimerApellido+"', SEGUNDO_APELLIDO = '"+SegundoApellido+"', SEXO = '"+Sexo+"', EDAD = '"+Edad+"', DIRECCION = '"+Direccion+"' WHERE DPI = '"+Dpi+"'";
+                
+        
+        Connection connection = con.iniciarConexion();
+        try {
+             Statement sta7 = connection.createStatement();
+             sta7.executeUpdate(sql6);
+             sta7.close();
+        } catch (SQLException ex) {
+                    
+                    JOptionPane.showMessageDialog(null,ex);
+        }
+        
+        JOptionPane.showMessageDialog(null,"Paciente Actualizado","Realizado",JOptionPane.INFORMATION_MESSAGE);
+        txtPrimerNombre.setText("");
+        txtSegundoNombre.setText("");
+        txtPrimerApellido.setText("");
+        txtSegundoApellido.setText("");
+        txtDpi.setText("");
+        txtEdad.setText("");
+        txtDireccion.setText("");
+        txtEmail.setText("");
+        txtTelefono.setText("");
+        
+        btnGuardar.setText("Guardar");
+        btn_Agregar.setVisible(false);
+        txtDpi.requestFocus();
+        
     }
 
     /**
@@ -320,7 +350,7 @@ public class Pacientes extends javax.swing.JFrame {
                 btnGuardarMouseClicked(evt);
             }
         });
-        jPanel2.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 124, -1, -1));
+        jPanel2.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, -1, -1));
 
         btn_Agregar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btn_Agregar.setForeground(new java.awt.Color(255, 255, 255));
@@ -332,9 +362,9 @@ public class Pacientes extends javax.swing.JFrame {
                 btn_AgregarMouseClicked(evt);
             }
         });
-        jPanel2.add(btn_Agregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(157, 132, 110, -1));
+        jPanel2.add(btn_Agregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 140, 110, -1));
 
-        jPanel3.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(387, 88, 330, 270));
+        jPanel3.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(387, 88, 340, 280));
 
         jPanel1.setOpaque(false);
 
@@ -492,6 +522,7 @@ public class Pacientes extends javax.swing.JFrame {
     private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
         // TODO add your handling code here:
         Hospital hosp = new Hospital();
+        btn_Agregar.setVisible(true);
         
         
         
@@ -505,7 +536,9 @@ public class Pacientes extends javax.swing.JFrame {
 
             }else{
                
-                 
+                    ImageIcon uno=new ImageIcon(this.getClass().getResource("/Imagenes/Edit-48.png"));
+                    btn_Agregar.setIcon(uno);
+                    btn_Agregar.setText("Agregar");
                     InsertarPersona(dpi);
                     //InsertarInfoAdicional(CodigoPersona(dpi));
                     
@@ -517,7 +550,9 @@ public class Pacientes extends javax.swing.JFrame {
             Pacientes_2 siguiente = new Pacientes_2();
             siguiente.setVisible(true);
             this.hide();
-        }   
+        }else if(btnGuardar.getText().equals("Modificar")){
+            Modificar();
+        }
     }//GEN-LAST:event_btnGuardarMouseClicked
 
     private void txtDpiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDpiKeyTyped
@@ -529,21 +564,23 @@ public class Pacientes extends javax.swing.JFrame {
     private void btnBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseClicked
         // TODO add your handling code here:
         
+        
         boolean existe = false;
         String codigo_persona= "";
         String sexo="";
         String nombre="";
         String edad="";
         String dpi= txtDpi.getText().trim();
-        String telefono="";
-        String email="";
+        String segundo_nombre="";
+        String primer_apellido="";
         String apellido="";
         String direccion = "";
+        String segundo_apellido = "";
         
         
         Connection connection = con.iniciarConexion();
         
-         String sql3 = "SELECT CODIGO_PERSONA, SEXO, NOMBRE, EDAD, DIRECCION, TELEFONO, EMAIL, APELLIDO FROM PERSONA WHERE DPI = '"+dpi+"'";
+         String sql3 = "SELECT CODIGO_PERSONA, NOMBRE, SEGUNDO_NOMBRE, PRIMER_APELLIDO,SEGUNDO_APELLIDO, SEXO, EDAD, DIRECCION FROM PERSONA WHERE DPI = '"+dpi+"'";
          
          try {
             Statement st2 = connection.createStatement();
@@ -552,13 +589,14 @@ public class Pacientes extends javax.swing.JFrame {
             while (rs2.next()){
                  existe = true;
                  codigo_persona = rs2.getString("CODIGO_PERSONA");
-                 sexo = (rs2.getString("SEXO")).trim();
                  nombre = (rs2.getString("NOMBRE")).trim();
+                 segundo_nombre = (rs2.getString("SEGUNDO_NOMBRE")).trim();
+                 primer_apellido = (rs2.getString("PRIMER_APELLIDO")).trim();
+                 segundo_apellido = (rs2.getString("SEGUNDO_APELLIDO")).trim();
+                 sexo = (rs2.getString("SEXO")).trim();
                  edad = (rs2.getString("EDAD")).trim();
-                 telefono = (rs2.getString("TELEFONO")).trim();
-                 email = (rs2.getString("EMAIL"));
                  direccion = (rs2.getString("DIRECCION")).trim();
-                 apellido = (rs2.getString("APELLIDO")).trim();
+                 
             }
                         
         } catch (SQLException ex) {
@@ -566,13 +604,15 @@ public class Pacientes extends javax.swing.JFrame {
         }
          
         if(existe){
-            //btnGuardar.setEnabled(false);
-            btnGuardar.setVisible(false);
-            //btn_2.setVisible(true);
             btn_Agregar.setVisible(true);
-            
+            btnGuardar.setText("Modificar");
+            btn_Agregar.setText("Cancelar");
+            ImageIcon uno=new ImageIcon(this.getClass().getResource("/Imagenes/Cancel.png"));
+            btn_Agregar.setIcon(uno);
             txtPrimerNombre.setText(nombre);
-            txtSegundoNombre.setText(apellido);
+            txtSegundoNombre.setText(segundo_nombre);
+            txtPrimerApellido.setText(primer_apellido);
+            txtSegundoApellido.setText(segundo_apellido);
             if(sexo.equals("Masculino")){
                 op_masculino.setSelected(true);
             }else{
@@ -580,11 +620,8 @@ public class Pacientes extends javax.swing.JFrame {
             }
             txtEdad.setText(edad);
             txtDireccion.setText(direccion);
-            //txtTelefono.setText(telefono);
-            //txtEmail.setText(email);
             
-            LlenarCampos(codigo_persona);
-            Bloquear();
+            LlenarInfoAdicional(codigo_persona);
           
             
         }else{
@@ -594,11 +631,28 @@ public class Pacientes extends javax.swing.JFrame {
 
     private void btn_AgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_AgregarMouseClicked
         // TODO add your handling code here:
-        String dpi = txtDpi.getText().trim();
-        InsertarInfoAdicional(CodigoPersona(dpi));
-        JOptionPane.showMessageDialog(null,"Telefono, e-mail ingresados","Realizado",JOptionPane.INFORMATION_MESSAGE);        
-        txtEmail.setText("");
-        txtTelefono.setText("");
+        
+        if(btn_Agregar.getText().equals("Agregar")) {
+            
+            if(txtEmail.getText().isEmpty() || txtTelefono.getText().isEmpty()){
+               JOptionPane.showMessageDialog(null,"Por Favor llene los campos de Email y Telefono","Error",JOptionPane.ERROR_MESSAGE);
+            }else{
+                String dpi = txtDpi.getText().trim();
+                InsertarInfoAdicional(CodigoPersona(dpi));
+                JOptionPane.showMessageDialog(null,"Telefono, e-mail ingresados","Realizado",JOptionPane.INFORMATION_MESSAGE);        
+                txtEmail.setText("");
+                txtTelefono.setText("");
+            }
+            
+        
+        
+        }else if(btn_Agregar.getText().equals("Cancelar")) {
+            Limpiar();
+            btn_Agregar.setVisible(false);
+            btnGuardar.setText("Guardar");
+        }  
+        
+        
     }//GEN-LAST:event_btn_AgregarMouseClicked
 
     /**
