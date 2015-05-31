@@ -103,12 +103,12 @@
                           <Group type="102" attributes="0">
                               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
-                              <Component id="nombre" min="-2" pref="204" max="-2" attributes="0"/>
+                              <Component id="jTextField1" min="-2" pref="204" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
-                              <Component id="cantidad" min="-2" pref="204" max="-2" attributes="0"/>
+                              <Component id="jTextField2" min="-2" pref="204" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -117,14 +117,14 @@
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="tipo" max="32767" attributes="0"/>
-                                  <Component id="fecha" pref="201" max="32767" attributes="0"/>
+                                  <Component id="jComboBox1" max="32767" attributes="0"/>
+                                  <Component id="jDateChooser1" pref="201" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                               <EmptySpace pref="64" max="32767" attributes="0"/>
-                              <Component id="presentacion" min="-2" pref="204" max="-2" attributes="0"/>
+                              <Component id="jComboBox2" min="-2" pref="204" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -153,14 +153,14 @@
                               <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <Component id="nombre" min="-2" max="-2" attributes="0"/>
+                              <Component id="jTextField1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="cantidad" min="-2" max="-2" attributes="0"/>
+                              <Component id="jTextField2" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="fecha" min="-2" max="-2" attributes="0"/>
+                          <Component id="jDateChooser1" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -169,13 +169,13 @@
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
-                                      <Component id="tipo" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jComboBox1" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="presentacion" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jComboBox2" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -211,7 +211,7 @@
                   <Image iconType="3" name="/Imagenes/Plus-32.png"/>
                 </Property>
                 <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                  <Color id="Default Cursor"/>
+                  <Color id="Cursor de Mano"/>
                 </Property>
               </Properties>
               <Events>
@@ -224,11 +224,8 @@
                   <Image iconType="3" name="/Imagenes/Plus-32.png"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel5MouseClicked"/>
-              </Events>
             </Component>
-            <Component class="javax.swing.JComboBox" name="presentacion">
+            <Component class="javax.swing.JComboBox" name="jComboBox2">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="4">
@@ -247,13 +244,10 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Guardar"/>
               </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel6MouseClicked"/>
-              </Events>
             </Component>
-            <Component class="javax.swing.JTextField" name="nombre">
+            <Component class="javax.swing.JTextField" name="jTextField1">
             </Component>
-            <Component class="javax.swing.JTextField" name="cantidad">
+            <Component class="javax.swing.JTextField" name="jTextField2">
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel7">
               <Properties>
@@ -263,7 +257,7 @@
                 <Property name="text" type="java.lang.String" value="Fecha de Vencimiento:"/>
               </Properties>
             </Component>
-            <Component class="com.toedter.calendar.JDateChooser" name="fecha">
+            <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser1">
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel8">
               <Properties>
@@ -273,7 +267,7 @@
                 <Property name="text" type="java.lang.String" value="Tipo de Medicina:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JComboBox" name="tipo">
+            <Component class="javax.swing.JComboBox" name="jComboBox1">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="4">
@@ -312,7 +306,7 @@
               <Image iconType="3" name="/Imagenes/close.png"/>
             </Property>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Default Cursor"/>
+              <Color id="Cursor de Mano"/>
             </Property>
           </Properties>
           <Events>

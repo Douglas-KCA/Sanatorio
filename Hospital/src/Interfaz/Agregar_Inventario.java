@@ -7,13 +7,8 @@ package Interfaz;
  */
 
 
-import Conexion.Conexion;
 import Interfaz.*;
 import static java.lang.System.exit;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -25,7 +20,6 @@ import javax.swing.JPanel;
  * @author Douglas
  */
 public class Agregar_Inventario extends javax.swing.JFrame {
-    Conexion con = new Conexion();
 
     /**
      * Creates new form Citas
@@ -59,14 +53,14 @@ public class Agregar_Inventario extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        presentacion = new javax.swing.JComboBox();
+        jComboBox2 = new javax.swing.JComboBox();
         jLabel6 = new javax.swing.JLabel();
-        nombre = new javax.swing.JTextField();
-        cantidad = new javax.swing.JTextField();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        fecha = new com.toedter.calendar.JDateChooser();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jLabel8 = new javax.swing.JLabel();
-        tipo = new javax.swing.JComboBox();
+        jComboBox1 = new javax.swing.JComboBox();
         jLabel9 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -86,7 +80,7 @@ public class Agregar_Inventario extends javax.swing.JFrame {
         jLabel4.setText("Cantidad:");
 
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Plus-32.png"))); // NOI18N
-        jLabel12.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jLabel12.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel12MouseClicked(evt);
@@ -94,21 +88,11 @@ public class Agregar_Inventario extends javax.swing.JFrame {
         });
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Plus-32.png"))); // NOI18N
-        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel5MouseClicked(evt);
-            }
-        });
 
-        presentacion.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/save.png"))); // NOI18N
         jLabel6.setText("Guardar");
-        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel6MouseClicked(evt);
-            }
-        });
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel7.setText("Fecha de Vencimiento:");
@@ -116,7 +100,7 @@ public class Agregar_Inventario extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel8.setText("Tipo de Medicina:");
 
-        tipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel9.setText("Presentacion:");
@@ -131,23 +115,23 @@ public class Agregar_Inventario extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
                             .addComponent(jLabel8))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(tipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(fecha, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)))
+                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
-                        .addComponent(presentacion, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
@@ -169,12 +153,12 @@ public class Agregar_Inventario extends javax.swing.JFrame {
                         .addComponent(jLabel4)
                         .addGap(7, 7, 7))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -182,11 +166,11 @@ public class Agregar_Inventario extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel8)
-                                .addComponent(tipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel12))
                         .addGap(30, 30, 30)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(presentacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9)))
                     .addComponent(jLabel5))
                 .addGap(36, 36, 36)
@@ -199,7 +183,7 @@ public class Agregar_Inventario extends javax.swing.JFrame {
         jLabel1.setText("Agregar Inventario");
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/close.png"))); // NOI18N
-        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel2MouseClicked(evt);
@@ -260,178 +244,11 @@ public class Agregar_Inventario extends javax.swing.JFrame {
         exit(0);
     }//GEN-LAST:event_jLabel2MouseClicked
 
-    void combo(){//---------------------------------------------------------------------terminar
-        Connection connection = con.iniciarConexion();
-        tipo.removeAllItems();
-        
-        String codigo = "";
-        String tipomed = "";
-        
-        
-        String sql3 = "SELECT CODIGO_TIPO_MEDICINA,TIPO_MEDICINA FROM TIPO_MEDICINA";
-         
-         try {
-            Statement st2 = connection.createStatement();
-            ResultSet rs2 = st2.executeQuery(sql3);
-                    
-            while (rs2.next()){
-                 
-                 codigo = rs2.getString("CODIGO_TIPO_MEDICINA").trim();
-                 tipomed = (rs2.getString("TIPO_MEDICINA")).trim();
-                 
-                 tipo.addItem(codigo+". "+tipomed);
-                 codigo = "";
-                 tipomed = "";
-                 
-            }
-                        
-        } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, ex);
-        }
-   }
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
         // TODO add your handling code here:
-         String alf = (JOptionPane.showInputDialog("Tipo de Producto"));
-        //System.out.println(alf);
-        //String padecimiento= alf.trim();
-        if(alf == null){
-            //System.out.println("hola");
-        }else{
-            String tipo= alf.trim();
-            
-            String sql = "INSERT INTO TIPO_MEDICINA VALUES (SECUENCIA_TIPO_MEDICINA.nextval, '"+tipo+"') ";
-                
-            
-            Connection connection = con.iniciarConexion();
-            try {
-                 Statement sta = connection.createStatement();
-                 sta.executeUpdate(sql);
-                 sta.close();
-            } catch (SQLException ex) {
-
-                        JOptionPane.showMessageDialog(null,ex);
-            }
-            combo();
-        
-            
-        }
+        String alf = (JOptionPane.showInputDialog("Nuevo Padecimiento"));
+        System.out.println(alf);
     }//GEN-LAST:event_jLabel12MouseClicked
-
-    void combo1(){//---------------------------------------------------------------------terminar
-        Connection connection = con.iniciarConexion();
-        presentacion.removeAllItems();
-        
-        String codigo = "";
-        String pres = "";
-        
-        
-        String sql3 = "SELECT CODIGO_PRESENTACION, NOMBRE_PRESENTACION FROM PRESENTACION";
-         
-         try {
-            Statement st2 = connection.createStatement();
-            ResultSet rs2 = st2.executeQuery(sql3);
-                    
-            while (rs2.next()){
-                 
-                 codigo = rs2.getString("CODIGO_PRESENTACION").trim();
-                 pres = (rs2.getString("NOMBRE_PRESENTACION")).trim();
-                 
-                 presentacion.addItem(codigo+". "+pres);
-                 codigo = "";
-                 pres = "";
-                 
-            }
-                        
-        } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, ex);
-        }
-   }
-    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-        // TODO add your handling code here:
-         String alf = (JOptionPane.showInputDialog("Presentacion"));
-        //System.out.println(alf);
-        //String padecimiento= alf.trim();
-        if(alf == null){
-            //System.out.println("hola");
-        }else{
-            String pres= alf.trim();
-            
-            String sql = "INSERT INTO PRESENTACION VALUES (SECUENCIA_PRESENTACION.nextval, '"+pres+"') ";
-                
-            
-            Connection connection = con.iniciarConexion();
-            try {
-                 Statement sta = connection.createStatement();
-                 sta.executeUpdate(sql);
-                 sta.close();
-            } catch (SQLException ex) {
-
-                        JOptionPane.showMessageDialog(null,ex);
-            }
-            combo1();
-        
-        }
-    }//GEN-LAST:event_jLabel5MouseClicked
-
-    String cortador(String dato){
-        String prof = dato;
-            String profe="";
-            int estado = 0;
-            
-            for(int i=0;i<=prof.length();i++){
-                if(((int)prof.charAt(i)!= 10)){
-                    switch(estado){
-                        case 0:
-                            if((int)prof.charAt(i)!= 46){
-                                profe=profe+prof.charAt(i);
-                                System.out.println(profe);
-                            }else{
-                                estado = 1;
-                                System.out.println("adiosito");
-                            }
-                        break;
-                        case 1:
-                            System.out.println("adios");
-                            System.out.println(prof.charAt(i));
-                         break;
-                    }
-                    
-                }
-                if(estado == 1){
-                    break;
-                }
-        }
-            return profe;
-    }
-    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
-        // TODO add your handling code here:
-        String nom= nombre.getText().trim();
-        String cant = cantidad.getText().trim();
-        String date = fecha.getDateFormatString().trim();
-        String type = tipo.getSelectedItem().toString().trim();
-        String pres = presentacion.getSelectedItem().toString().trim();
-        
-        String tip = cortador(type);
-        String presen = cortador(pres);
-        
-        String sql = "INSERT INTO INVENTARIO VALUES (SECUENCIA_INVENTARIO.nextval, '"+nom+"', '"+cant+"', '"+date+"', '100', '"+tip+"', '"+presen+"') ";
-        
-                
-            
-            Connection connection = con.iniciarConexion();
-            try {
-                 Statement sta = connection.createStatement();
-                 sta.executeUpdate(sql);
-                 sta.close();
-            } catch (SQLException ex) {
-
-                        JOptionPane.showMessageDialog(null,ex);
-            }
-        
-        nombre.setText("");
-        cantidad.setText("");
-        
-    }//GEN-LAST:event_jLabel6MouseClicked
 
     /**
      * @param args the command line arguments
@@ -484,8 +301,9 @@ public class Agregar_Inventario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField cantidad;
-    private com.toedter.calendar.JDateChooser fecha;
+    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox jComboBox2;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
@@ -498,8 +316,7 @@ public class Agregar_Inventario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField nombre;
-    private javax.swing.JComboBox presentacion;
-    private javax.swing.JComboBox tipo;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }
