@@ -7,8 +7,14 @@ package Interfaz;
  */
 
 
+import Conexion.Conexion;
 import Interfaz.*;
+import hospital.Hospital;
 import static java.lang.System.exit;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -20,7 +26,9 @@ import javax.swing.JPanel;
  * @author Douglas
  */
 public class Pacientes_3 extends javax.swing.JFrame {
-
+    Conexion con = new Conexion();
+    Hospital hosp = new Hospital();
+    int cont = 0;
     /**
      * Creates new form Citas
      */
@@ -36,8 +44,179 @@ public class Pacientes_3 extends javax.swing.JFrame {
         fondo.setIcon(uno); 
         getLayeredPane().add(fondo,JLayeredPane.FRAME_CONTENT_LAYER); 
         fondo.setBounds(0,0,uno.getIconWidth(),uno.getIconHeight());
+        
+        comboPadecimiento();
+        comboAlergias();
+        btnFinalizar.setVisible(false);
     }
+    
+    void comboPadecimiento(){
+        Connection connection = con.iniciarConexion();
+        cmbPadecimiento.removeAllItems();
+        
+        String codigo = "";
+        String nombre_padecimiento = "";
+        
+        
+        String sql3 = "SELECT CODIGO_PADECIMIENTO,NOMBRE_PADECIMIENTO FROM PADECIMIENTO";
+         
+         try {
+            Statement st2 = connection.createStatement();
+            ResultSet rs2 = st2.executeQuery(sql3);
+                    
+            while (rs2.next()){
+                 
+                 codigo = rs2.getString("CODIGO_PADECIMIENTO").trim();
+                 nombre_padecimiento = (rs2.getString("NOMBRE_PADECIMIENTO")).trim();
+                 
+                 cmbPadecimiento.addItem(codigo+". "+nombre_padecimiento);
+                 codigo = "";
+                 nombre_padecimiento = "";
+                 
+            }
+                        
+        } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+        }
+   }
+    
+    
+   void comboAlergias(){
+        Connection connection = con.iniciarConexion();
+        cmbAlergias.removeAllItems();
+        
+        String codigo = "";
+        String nombre_alergia = "";
+        
+        
+        String sql3 = "SELECT CODIGO_ALERGIA,NOMBRE_ALERGIA FROM ALERGIA";
+         
+         try {
+            Statement st2 = connection.createStatement();
+            ResultSet rs2 = st2.executeQuery(sql3);
+                    
+            while (rs2.next()){
+                 
+                 codigo = rs2.getString("CODIGO_ALERGIA").trim();
+                 nombre_alergia = (rs2.getString("NOMBRE_ALERGIA")).trim();
+                 
+                 cmbAlergias.addItem(codigo+". "+nombre_alergia);
+                 codigo = "";
+                 nombre_alergia = "";
+                 
+            }
+                        
+        } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+        }
+   }
+   
+   void InsertarPadecimientoPaciente(String Codigo){
+       String codigo_paciente = hosp.getCodigo_paciente();
+       String sql = "INSERT INTO PADECIMIENTO_PACIENTE VALUES (SECUENCIA_PAC_PADECIMIENTO.nextval, '"+Codigo+"', '"+codigo_paciente+"') ";
+                
+            
+            Connection connection = con.iniciarConexion();
+            try {
+                 Statement sta = connection.createStatement();
+                 sta.executeUpdate(sql);
+                 sta.close();
+            } catch (SQLException ex) {
 
+                        JOptionPane.showMessageDialog(null,ex);
+            }
+       
+   }
+   
+   void InsertarAlergiaPaciente(String Codigo){
+       String codigo_paciente = hosp.getCodigo_paciente();
+       String sql = "INSERT INTO ALERGIA_PACIENTE VALUES (SECUENCIA_ALERGIA_PACIENTE.nextval, '"+codigo_paciente+"', '"+Codigo+"') ";
+                
+            
+            Connection connection = con.iniciarConexion();
+            try {
+                 Statement sta = connection.createStatement();
+                 sta.executeUpdate(sql);
+                 sta.close();
+            } catch (SQLException ex) {
+
+                        JOptionPane.showMessageDialog(null,ex);
+            }
+       
+   }
+   
+   void cortadorPadecimiento(){
+       cont++;
+       int estado = 0;
+       
+       String codigo = cmbPadecimiento.getSelectedItem().toString();
+       String lexe = "";
+       for(int i=0;i<=codigo.length();i++){
+                if(((int)codigo.charAt(i)!= 10)){
+                    switch(estado){
+                        case 0:
+                            if((int)codigo.charAt(i)!= 46){
+                                lexe+=codigo.charAt(i);
+                                
+                            }else{
+                                System.out.println(lexe);
+                                InsertarPadecimientoPaciente(lexe);
+                                lexe = "";
+                                estado = 1;
+                                System.out.println("adiosito");
+                            }
+                        break;
+                        case 1:
+                            System.out.println("adios");
+                            System.out.println(codigo.charAt(i));
+                         break;
+                    }
+                    
+                }
+                if(estado == 1){
+                    break;
+                }
+            }
+       
+       
+   }
+   
+   void cortadorAlergia(){
+       int estado = 0;
+       
+       String codigo = cmbAlergias.getSelectedItem().toString();
+       String lexe = "";
+       for(int i=0;i<=codigo.length();i++){
+                if(((int)codigo.charAt(i)!= 10)){
+                    switch(estado){
+                        case 0:
+                            if((int)codigo.charAt(i)!= 46){
+                                lexe+=codigo.charAt(i);
+                                
+                            }else{
+                                System.out.println(lexe);
+                                InsertarAlergiaPaciente(lexe);
+                                lexe = "";
+                                estado = 1;
+                                System.out.println("adiosito");
+                            }
+                        break;
+                        case 1:
+                            System.out.println("adios");
+                            System.out.println(codigo.charAt(i));
+                         break;
+                    }
+                    
+                }
+                if(estado == 1){
+                    break;
+                }
+            }
+       
+       
+   }
+   
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -51,11 +230,12 @@ public class Pacientes_3 extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
-        jLabel6 = new javax.swing.JLabel();
+        cmbPadecimiento = new javax.swing.JComboBox();
+        btnLlenarPadecimiento = new javax.swing.JLabel();
+        btnLlenarAlergias = new javax.swing.JLabel();
+        cmbAlergias = new javax.swing.JComboBox();
+        btnGuardar = new javax.swing.JLabel();
+        btnFinalizar = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
@@ -73,22 +253,36 @@ public class Pacientes_3 extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("Alergias:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Plus-32.png"))); // NOI18N
-        jLabel12.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnLlenarPadecimiento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/plus.png"))); // NOI18N
+        btnLlenarPadecimiento.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLlenarPadecimiento.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel12MouseClicked(evt);
+                btnLlenarPadecimientoMouseClicked(evt);
             }
         });
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Plus-32.png"))); // NOI18N
+        btnLlenarAlergias.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/plus.png"))); // NOI18N
+        btnLlenarAlergias.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnLlenarAlergiasMouseClicked(evt);
+            }
+        });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/save.png"))); // NOI18N
+        btnGuardar.setText("Guardar");
+        btnGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnGuardarMouseClicked(evt);
+            }
+        });
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/save.png"))); // NOI18N
-        jLabel6.setText("Guardar");
+        btnFinalizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Terminado.png"))); // NOI18N
+        btnFinalizar.setText("Finalizar");
+        btnFinalizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnFinalizarMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -101,16 +295,18 @@ public class Pacientes_3 extends javax.swing.JFrame {
                     .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jComboBox1, 0, 204, Short.MAX_VALUE)
-                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(cmbPadecimiento, 0, 204, Short.MAX_VALUE)
+                    .addComponent(cmbAlergias, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel12)
-                    .addComponent(jLabel5))
+                    .addComponent(btnLlenarPadecimiento)
+                    .addComponent(btnLlenarAlergias))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(141, Short.MAX_VALUE)
-                .addComponent(jLabel6)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnGuardar)
+                    .addComponent(btnFinalizar))
                 .addGap(123, 123, 123))
         );
         jPanel1Layout.setVerticalGroup(
@@ -118,19 +314,21 @@ public class Pacientes_3 extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel12)
+                    .addComponent(btnLlenarPadecimiento)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel3)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cmbPadecimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmbAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel4))
-                    .addComponent(jLabel5))
+                    .addComponent(btnLlenarAlergias))
                 .addGap(25, 25, 25)
-                .addComponent(jLabel6)
-                .addContainerGap(95, Short.MAX_VALUE))
+                .addComponent(btnGuardar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addComponent(btnFinalizar)
+                .addContainerGap())
         );
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
@@ -171,7 +369,7 @@ public class Pacientes_3 extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(102, Short.MAX_VALUE))
+                .addContainerGap(68, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addContainerGap()
@@ -199,18 +397,77 @@ public class Pacientes_3 extends javax.swing.JFrame {
         exit(0);
     }//GEN-LAST:event_jLabel2MouseClicked
 
-    private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
+    private void btnLlenarPadecimientoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLlenarPadecimientoMouseClicked
         // TODO add your handling code here:
         String alf = (JOptionPane.showInputDialog("Nuevo Padecimiento"));
-        
-        if(alf.equals(null)){
-            System.out.println(alf);
+        //System.out.println(alf);
+        //String padecimiento= alf.trim();
+        if(alf == null){
+            //System.out.println("hola");
         }else{
-            System.out.println("Noo tiene"+alf);
+            String tipo= alf.trim();
+            
+            String sql = "INSERT INTO PADECIMIENTO VALUES (SECUENCIA_PADECIMIENTO.nextval, '"+tipo+"') ";
+                
+            
+            Connection connection = con.iniciarConexion();
+            try {
+                 Statement sta = connection.createStatement();
+                 sta.executeUpdate(sql);
+                 sta.close();
+            } catch (SQLException ex) {
+
+                        JOptionPane.showMessageDialog(null,ex);
+            }
+            comboPadecimiento();
+        }
+    }//GEN-LAST:event_btnLlenarPadecimientoMouseClicked
+
+    private void btnLlenarAlergiasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLlenarAlergiasMouseClicked
+        // TODO add your handling code here:
+        String alf = (JOptionPane.showInputDialog("Nueva Alergia"));
+        //System.out.println(alf);
+        //String padecimiento= alf.trim();
+        if(alf == null){
+            //System.out.println("hola");
+        }else{
+            String tipo= alf.trim();
+            
+            String sql = "INSERT INTO ALERGIA VALUES (SECUENCIA_ALERGIA.nextval, '"+tipo+"') ";
+                
+            
+            Connection connection = con.iniciarConexion();
+            try {
+                 Statement sta = connection.createStatement();
+                 sta.executeUpdate(sql);
+                 sta.close();
+            } catch (SQLException ex) {
+
+                        JOptionPane.showMessageDialog(null,ex);
+            }
+            comboAlergias();
+        }
+        
+    }//GEN-LAST:event_btnLlenarAlergiasMouseClicked
+
+    private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
+        // TODO add your handling code here:
+        cortadorPadecimiento();
+        cortadorAlergia();
+        JOptionPane.showMessageDialog(null,"Paciente Registrado Correctamente","Realizado",JOptionPane.INFORMATION_MESSAGE);
+        if(cont>0){
+            btnFinalizar.setVisible(true);
         }
         
         
-    }//GEN-LAST:event_jLabel12MouseClicked
+    }//GEN-LAST:event_btnGuardarMouseClicked
+
+    private void btnFinalizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnFinalizarMouseClicked
+        // TODO add your handling code here:
+        MenuPrincipal menu = new MenuPrincipal();
+        menu.setVisible(true);
+        this.hide();
+    }//GEN-LAST:event_btnFinalizarMouseClicked
 
     /**
      * @param args the command line arguments
@@ -241,6 +498,10 @@ public class Pacientes_3 extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -251,15 +512,16 @@ public class Pacientes_3 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
+    private javax.swing.JLabel btnFinalizar;
+    private javax.swing.JLabel btnGuardar;
+    private javax.swing.JLabel btnLlenarAlergias;
+    private javax.swing.JLabel btnLlenarPadecimiento;
+    private javax.swing.JComboBox cmbAlergias;
+    private javax.swing.JComboBox cmbPadecimiento;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
