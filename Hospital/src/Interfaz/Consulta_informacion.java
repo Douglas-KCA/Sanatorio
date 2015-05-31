@@ -106,6 +106,8 @@ public class Consulta_informacion extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(TablaVerCitas);
 
+        jPanel1.setOpaque(false);
+
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Nombre");
 

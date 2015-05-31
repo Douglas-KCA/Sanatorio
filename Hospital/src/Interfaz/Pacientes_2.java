@@ -176,6 +176,7 @@ public class Pacientes_2 extends javax.swing.JFrame {
         });
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Referencia"));
+        jPanel2.setOpaque(false);
 
         jLabel6.setText("Primer Nombre:");
 
