@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Calendar;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -33,6 +34,8 @@ Conexion con = new Conexion();
     public Agregar_Inventario() {
         initComponents();
         setLocationRelativeTo(null);
+        combo();
+        combo1();
         
         
         //-------FONDO DE PANTALLA PRINCIPAL---------------
@@ -382,14 +385,20 @@ Conexion con = new Conexion();
                 // TODO add your handling code here:
         String nom= nombre.getText().trim();
         String cant = cantidad.getText().trim();
-        String date = fecha.getDateFormatString().trim();
+        int ano = fecha.getCalendar().get(Calendar.YEAR);
+        int mes = fecha.getCalendar().get(Calendar.MONTH) + 1;
+        int dia = fecha.getCalendar().get(Calendar.DAY_OF_MONTH);
+        
+        System.out.println(dia);
+        System.out.println(mes);
+        System.out.println(ano);
         String type = tipo.getSelectedItem().toString().trim();
         String pres = presentacion.getSelectedItem().toString().trim();
         
         String tip = cortador(type);
         String presen = cortador(pres);
         
-        String sql = "INSERT INTO INVENTARIO VALUES (SECUENCIA_INVENTARIO.nextval, '"+nom+"', '"+cant+"', '"+date+"', '100', '"+tip+"', '"+presen+"') ";
+        String sql = "INSERT INTO INVENTARIO VALUES (SECUENCIA_INVENTARIO.nextval, '"+nom+"', '"+Integer.parseInt(cant)+"', '"+dia+"/"+mes+"/"+ano+"', '100.00', '"+tip+"', '"+presen+"') ";
         
                 
             

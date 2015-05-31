@@ -180,7 +180,7 @@ public class Paciente_Informe extends javax.swing.JFrame {
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         // TODO add your handling code here:
         //this.hide();
-        exit(0);
+        this.hide();
     }//GEN-LAST:event_jLabel2MouseClicked
 
     /**
