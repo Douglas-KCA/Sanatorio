@@ -398,7 +398,7 @@ Conexion con = new Conexion();
         String tip = cortador(type);
         String presen = cortador(pres);
         
-        String sql = "INSERT INTO INVENTARIO VALUES (SECUENCIA_INVENTARIO.nextval, '"+nom+"', '"+Integer.parseInt(cant)+"', '"+dia+"/"+mes+"/"+ano+"', '100.00', '"+tip+"', '"+presen+"') ";
+        String sql = "INSERT INTO INVENTARIO VALUES (SECUENCIA_INVENTARIO.nextval, '"+nom+"', '"+Integer.parseInt(cant)+"', '"+dia+"','"+mes+"','"+ano+"', '"+tip+"', '"+presen+"') ";
         
                 
             
@@ -412,8 +412,15 @@ Conexion con = new Conexion();
                         JOptionPane.showMessageDialog(null,ex);
             }
         
+        
+        JOptionPane.showMessageDialog(null,"Producto Agregado","Realizado",JOptionPane.INFORMATION_MESSAGE);            
+        
         nombre.setText("");
         cantidad.setText("");
+        fecha.setDate(null);
+        nombre.requestFocus();
+        
+        
         
 
     }//GEN-LAST:event_jLabel6MouseClicked
