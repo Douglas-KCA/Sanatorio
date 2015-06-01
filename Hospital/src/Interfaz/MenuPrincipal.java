@@ -48,12 +48,24 @@ public class MenuPrincipal extends javax.swing.JFrame {
         Barra_menu = new javax.swing.JMenuBar();
         menu_paciente = new javax.swing.JMenu();
         submenu_nuevopaciente = new javax.swing.JMenuItem();
+        submenu_listarpacientes = new javax.swing.JMenuItem();
         submenu_imprimir = new javax.swing.JMenuItem();
+        menu_empleados = new javax.swing.JMenu();
+        submenu_agregarempleado = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         menu_citas = new javax.swing.JMenu();
         submenu_citas = new javax.swing.JMenuItem();
-        menu_servicios = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        submenu_buscarcitas = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        submenu_crearconsulta = new javax.swing.JMenuItem();
+        menu_habitacion = new javax.swing.JMenu();
+        submenu_reghabitacion = new javax.swing.JMenuItem();
+        menu_informe = new javax.swing.JMenu();
+        submenu_informepaciente = new javax.swing.JMenuItem();
+        submenu_verinforme = new javax.swing.JMenuItem();
+        menu_inventario = new javax.swing.JMenu();
+        submenu_listarinventario = new javax.swing.JMenuItem();
+        submenu_agregarinventario = new javax.swing.JMenuItem();
         menu_historial = new javax.swing.JMenu();
         menu_opcion = new javax.swing.JMenu();
         submenu_salir = new javax.swing.JMenuItem();
@@ -73,10 +85,31 @@ public class MenuPrincipal extends javax.swing.JFrame {
         });
         menu_paciente.add(submenu_nuevopaciente);
 
+        submenu_listarpacientes.setText("Listar Pacientes");
+        submenu_listarpacientes.setEnabled(false);
+        menu_paciente.add(submenu_listarpacientes);
+
         submenu_imprimir.setText("Imprimir");
+        submenu_imprimir.setEnabled(false);
         menu_paciente.add(submenu_imprimir);
 
         Barra_menu.add(menu_paciente);
+
+        menu_empleados.setText("Empleados");
+
+        submenu_agregarempleado.setText("Agregar Empleado");
+        submenu_agregarempleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submenu_agregarempleadoActionPerformed(evt);
+            }
+        });
+        menu_empleados.add(submenu_agregarempleado);
+
+        jMenuItem1.setText("Listar Empleados");
+        jMenuItem1.setEnabled(false);
+        menu_empleados.add(jMenuItem1);
+
+        Barra_menu.add(menu_empleados);
 
         menu_citas.setText("Citas");
 
@@ -88,17 +121,80 @@ public class MenuPrincipal extends javax.swing.JFrame {
         });
         menu_citas.add(submenu_citas);
 
+        submenu_buscarcitas.setText("Buscar Citas");
+        submenu_buscarcitas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submenu_buscarcitasActionPerformed(evt);
+            }
+        });
+        menu_citas.add(submenu_buscarcitas);
+
         Barra_menu.add(menu_citas);
 
-        menu_servicios.setText("Servicios");
+        jMenu1.setText("Consulta");
 
-        jMenuItem4.setText("Registrar Servicio");
-        menu_servicios.add(jMenuItem4);
+        submenu_crearconsulta.setText("Crear Consulta");
+        submenu_crearconsulta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submenu_crearconsultaActionPerformed(evt);
+            }
+        });
+        jMenu1.add(submenu_crearconsulta);
 
-        jMenuItem5.setText("Lista de Servicios");
-        menu_servicios.add(jMenuItem5);
+        Barra_menu.add(jMenu1);
 
-        Barra_menu.add(menu_servicios);
+        menu_habitacion.setText("Habitacion");
+
+        submenu_reghabitacion.setText("Registrar Habitacion");
+        submenu_reghabitacion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                submenu_reghabitacionMouseClicked(evt);
+            }
+        });
+        submenu_reghabitacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submenu_reghabitacionActionPerformed(evt);
+            }
+        });
+        menu_habitacion.add(submenu_reghabitacion);
+
+        Barra_menu.add(menu_habitacion);
+
+        menu_informe.setText("Informe");
+
+        submenu_informepaciente.setText("Agregar Informe");
+        submenu_informepaciente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submenu_informepacienteActionPerformed(evt);
+            }
+        });
+        menu_informe.add(submenu_informepaciente);
+
+        submenu_verinforme.setText("Ver Informe");
+        submenu_verinforme.setEnabled(false);
+        menu_informe.add(submenu_verinforme);
+
+        Barra_menu.add(menu_informe);
+
+        menu_inventario.setText("Inventario");
+
+        submenu_listarinventario.setText("Listar Inventario");
+        submenu_listarinventario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submenu_listarinventarioActionPerformed(evt);
+            }
+        });
+        menu_inventario.add(submenu_listarinventario);
+
+        submenu_agregarinventario.setText("Agregar Producto");
+        submenu_agregarinventario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submenu_agregarinventarioActionPerformed(evt);
+            }
+        });
+        menu_inventario.add(submenu_agregarinventario);
+
+        Barra_menu.add(menu_inventario);
 
         menu_historial.setText("Historial");
         Barra_menu.add(menu_historial);
@@ -173,6 +269,53 @@ public class MenuPrincipal extends javax.swing.JFrame {
         ver.setVisible(true);
     }//GEN-LAST:event_submenu_citasActionPerformed
 
+    private void submenu_buscarcitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submenu_buscarcitasActionPerformed
+        // TODO add your handling code here:
+        Consulta_Citas ver = new Consulta_Citas();
+        ver.setVisible(true);
+        
+    }//GEN-LAST:event_submenu_buscarcitasActionPerformed
+
+    private void submenu_reghabitacionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submenu_reghabitacionMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_submenu_reghabitacionMouseClicked
+
+    private void submenu_reghabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submenu_reghabitacionActionPerformed
+        // TODO add your handling code here:
+        Agregar_Habitacion ver = new Agregar_Habitacion();
+        ver.setVisible(true);
+    }//GEN-LAST:event_submenu_reghabitacionActionPerformed
+
+    private void submenu_agregarempleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submenu_agregarempleadoActionPerformed
+        // TODO add your handling code here:
+        Empleados ver = new Empleados();
+        ver.setVisible(true);
+    }//GEN-LAST:event_submenu_agregarempleadoActionPerformed
+
+    private void submenu_crearconsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submenu_crearconsultaActionPerformed
+        // TODO add your handling code here:
+        Consulta ver = new Consulta();
+        ver.setVisible(true);
+    }//GEN-LAST:event_submenu_crearconsultaActionPerformed
+
+    private void submenu_listarinventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submenu_listarinventarioActionPerformed
+        // TODO add your handling code here:
+        Inventario ver = new Inventario();
+        ver.setVisible(true);
+    }//GEN-LAST:event_submenu_listarinventarioActionPerformed
+
+    private void submenu_agregarinventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submenu_agregarinventarioActionPerformed
+        // TODO add your handling code here:
+        Agregar_Inventario ver = new Agregar_Inventario();
+        ver.setVisible(true);
+    }//GEN-LAST:event_submenu_agregarinventarioActionPerformed
+
+    private void submenu_informepacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submenu_informepacienteActionPerformed
+        // TODO add your handling code here:
+        Informe_Paciente ver = new Informe_Paciente();
+        ver.setVisible(true);
+    }//GEN-LAST:event_submenu_informepacienteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -211,16 +354,28 @@ public class MenuPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar Barra_menu;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenu menu_citas;
+    private javax.swing.JMenu menu_empleados;
+    private javax.swing.JMenu menu_habitacion;
     private javax.swing.JMenu menu_historial;
+    private javax.swing.JMenu menu_informe;
+    private javax.swing.JMenu menu_inventario;
     private javax.swing.JMenu menu_opcion;
     private javax.swing.JMenu menu_paciente;
-    private javax.swing.JMenu menu_servicios;
+    private javax.swing.JMenuItem submenu_agregarempleado;
+    private javax.swing.JMenuItem submenu_agregarinventario;
+    private javax.swing.JMenuItem submenu_buscarcitas;
     private javax.swing.JMenuItem submenu_citas;
+    private javax.swing.JMenuItem submenu_crearconsulta;
     private javax.swing.JMenuItem submenu_imprimir;
+    private javax.swing.JMenuItem submenu_informepaciente;
+    private javax.swing.JMenuItem submenu_listarinventario;
+    private javax.swing.JMenuItem submenu_listarpacientes;
     private javax.swing.JMenuItem submenu_nuevopaciente;
+    private javax.swing.JMenuItem submenu_reghabitacion;
     private javax.swing.JMenuItem submenu_salir;
+    private javax.swing.JMenuItem submenu_verinforme;
     // End of variables declaration//GEN-END:variables
 }

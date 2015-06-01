@@ -202,11 +202,9 @@ public class Inicio extends javax.swing.JFrame {
         String Usuario = txtUsuario.getText().toLowerCase();
         String Password = txtPassword.getText();
          if(Usuario.equals("admin") && (Password.equals("admin"))){
-                if(ConsultaAdmin()){
-                    MenuPrincipal adm = new MenuPrincipal(); 
+                MenuPrincipal adm = new MenuPrincipal(); 
                     adm.setVisible(true);
                     this.hide();
-                }
             
         }else if(Usuario.equals("operador") && (Password.equals("operador"))) {
             
