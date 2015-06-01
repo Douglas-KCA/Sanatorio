@@ -69,7 +69,7 @@ public class Consulta extends javax.swing.JFrame {
             }
         
         
-        JOptionPane.showMessageDialog(null,"Cita Agregada","Realizado",JOptionPane.INFORMATION_MESSAGE);            
+        JOptionPane.showMessageDialog(null,"Consulta Agregada","Realizado",JOptionPane.INFORMATION_MESSAGE);            
         
         txt_codigocita.setText("");
         txt_codigopaciente.setText("");
