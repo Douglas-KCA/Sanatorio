@@ -7,11 +7,19 @@ package Interfaz;
  */
 
 
+import Conexion.Conexion;
 import Interfaz.*;
+import hospital.Hospital;
 import static java.lang.System.exit;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Calendar;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -21,29 +29,21 @@ import javax.swing.table.DefaultTableModel;
  * @author Douglas
  */
 public class Consulta_Citas extends javax.swing.JFrame {
-
+    Conexion con = new Conexion();
+    String[] datos = {"Cita","Codigo","Nombre del Paciente"};
+    DefaultTableModel modelo = new DefaultTableModel(null, datos);
     /**
      * Creates new form Citas
      */
     public Consulta_Citas() {
         initComponents();
         setLocationRelativeTo(null);
-        String[] datos = {"No.","Nombre del Paciente","Fecha"};
-        DefaultTableModel modelo = new DefaultTableModel(null, datos);
-        TablaVerCitas.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        TablaVerCitas.setModel(modelo);
         
-        int[] anchos = {10, 300, 200};
-
-        //hacemos un bucle FOR desde cero hasta la cantidad de columnas
-
-        //de nuestra tabla
-
-        for(int i = 0; i < TablaVerCitas.getColumnCount(); i++) {
-
-        TablaVerCitas.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
-
-        }
+        
+        //TablaVerCitas.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        
+        
+        
         
         //-------FONDO DE PANTALLA PRINCIPAL---------------
         ((JPanel)getContentPane()).setOpaque(false); 
@@ -52,6 +52,50 @@ public class Consulta_Citas extends javax.swing.JFrame {
         fondo.setIcon(uno); 
         getLayeredPane().add(fondo,JLayeredPane.FRAME_CONTENT_LAYER); 
         fondo.setBounds(0,0,uno.getIconWidth(),uno.getIconHeight());
+    }
+    
+    void BuscarPersona(){
+        Connection connection = con.iniciarConexion();
+        DefaultTableModel modelo = new DefaultTableModel(null, datos);
+        int ano = fecha.getCalendar().get(Calendar.YEAR);
+        int mes = fecha.getCalendar().get(Calendar.MONTH) + 1;
+        int dia = fecha.getCalendar().get(Calendar.DAY_OF_MONTH);
+        String dpi=txt_dpi.getText();
+        String datos[]=new String[4];
+        
+        
+        
+         String sql3 = "SELECT (TRIM(PERSONA.NOMBRE) || ' ' || TRIM(PERSONA.SEGUNDO_NOMBRE) || ' ' || TRIM(PERSONA.PRIMER_APELLIDO) ||' ' || PERSONA.SEGUNDO_APELLIDO) AS NOMBRE, PACIENTE.CODIGO_PACIENTE AS CODIGO_PACIENTE, CITA.CODIGO_CITA AS CODIGO_CITA FROM PERSONA, PACIENTE, CITA WHERE PERSONA.CODIGO_PERSONA=PACIENTE.CODIGO_PERSONA AND PACIENTE.CODIGO_PACIENTE=CITA.CODIGO_PACIENTE AND PERSONA.DPI='"+dpi+"' AND CITA.DIA='"+dia+"' AND CITA.MES='"+mes+"' AND CITA.ANO='"+ano+"'";
+         
+         try {
+            Statement st2 = connection.createStatement();
+            ResultSet rs2 = st2.executeQuery(sql3);
+                    
+            while (rs2.next()){
+                 //existe = true;
+                 //codigo_paciente = rs2.getString("CODIGO_PACIENTE");
+                 datos[0] = (rs2.getString("CODIGO_CITA")).trim();
+                 datos[1] = (rs2.getString("CODIGO_PACIENTE")).trim();
+                 datos[2] = (rs2.getString("NOMBRE")).trim();
+                 
+                 modelo.addRow(datos);
+            }
+            
+            Hospital cualquier = new Hospital();
+            cualquier.setCodigo_cita(datos[0]);
+            cualquier.setCodigo_paciente_cita(datos[1]);
+            TablaVerCitas.setModel(modelo);
+            int[] anchos = {50, 150, 300};
+
+            //hacemos un bucle FOR desde cero hasta la cantidad de columnas de nuestra tabla
+
+            for(int i = 0; i < TablaVerCitas.getColumnCount(); i++) {
+                TablaVerCitas.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+            }
+                        
+        } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+        }    
     }
 
     /**
@@ -70,10 +114,10 @@ public class Consulta_Citas extends javax.swing.JFrame {
         TablaVerCitas = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txt_dpi = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        fecha = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -109,13 +153,18 @@ public class Consulta_Citas extends javax.swing.JFrame {
         jPanel1.setOpaque(false);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel3.setText("Nombre:");
+        jLabel3.setText("DPI:");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("Fecha:");
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/search.png"))); // NOI18N
         jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel5MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -128,8 +177,8 @@ public class Consulta_Citas extends javax.swing.JFrame {
                     .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField1)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE))
+                    .addComponent(txt_dpi)
+                    .addComponent(fecha, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -143,11 +192,11 @@ public class Consulta_Citas extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txt_dpi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -209,8 +258,15 @@ public class Consulta_Citas extends javax.swing.JFrame {
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         // TODO add your handling code here:
         //this.hide();
-        exit(0);
+        Consulta ne = new Consulta();
+        ne.setVisible(true);
+        this.hide();
     }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
+        // TODO add your handling code here:
+        BuscarPersona();
+    }//GEN-LAST:event_jLabel5MouseClicked
 
     /**
      * @param args the command line arguments
@@ -241,6 +297,10 @@ public class Consulta_Citas extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -252,7 +312,7 @@ public class Consulta_Citas extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TablaVerCitas;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser fecha;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -261,6 +321,6 @@ public class Consulta_Citas extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField txt_dpi;
     // End of variables declaration//GEN-END:variables
 }

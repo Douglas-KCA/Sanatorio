@@ -14,6 +14,8 @@ import Interfaz.Inicio;
 public class Hospital {
        private static String codigo_paciente;
        private static String codigo_persona;
+       private static String codigo_cita;
+       private static String codigo_paciente_cita;
 
     /**
      * @param args the command line arguments
@@ -50,6 +52,34 @@ public class Hospital {
      */
     public static void setCodigo_persona(String aCodigo_persona) {
         codigo_persona = aCodigo_persona;
+    }
+
+    /**
+     * @return the codigo_cita
+     */
+    public static String getCodigo_cita() {
+        return codigo_cita;
+    }
+
+    /**
+     * @param aCodigo_cita the codigo_cita to set
+     */
+    public static void setCodigo_cita(String aCodigo_cita) {
+        codigo_cita = aCodigo_cita;
+    }
+
+    /**
+     * @return the codigo_paciente_cita
+     */
+    public static String getCodigo_paciente_cita() {
+        return codigo_paciente_cita;
+    }
+
+    /**
+     * @param aCodigo_paciente_cita the codigo_paciente_cita to set
+     */
+    public static void setCodigo_paciente_cita(String aCodigo_paciente_cita) {
+        codigo_paciente_cita = aCodigo_paciente_cita;
     }
     
 }
