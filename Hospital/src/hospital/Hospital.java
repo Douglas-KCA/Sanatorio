@@ -16,6 +16,7 @@ public class Hospital {
        private static String codigo_persona;
        private static String codigo_cita;
        private static String codigo_paciente_cita;
+       private static String codigo_consulta_paciente;
 
     /**
      * @param args the command line arguments
@@ -80,6 +81,20 @@ public class Hospital {
      */
     public static void setCodigo_paciente_cita(String aCodigo_paciente_cita) {
         codigo_paciente_cita = aCodigo_paciente_cita;
+    }
+
+    /**
+     * @return the codigo_consulta_paciente
+     */
+    public static String getCodigo_consulta_paciente() {
+        return codigo_consulta_paciente;
+    }
+
+    /**
+     * @param aCodigo_consulta_paciente the codigo_consulta_paciente to set
+     */
+    public static void setCodigo_consulta_paciente(String aCodigo_consulta_paciente) {
+        codigo_consulta_paciente = aCodigo_consulta_paciente;
     }
     
 }

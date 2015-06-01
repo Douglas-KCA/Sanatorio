@@ -12,6 +12,7 @@ import Interfaz.*;
 import hospital.Hospital;
 import static java.lang.System.exit;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Calendar;
@@ -20,19 +21,28 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Douglas
  */
-public class Consulta extends javax.swing.JFrame {
+public class Consulta_Consultas extends javax.swing.JFrame {
     Conexion con = new Conexion();
+    String[] datos = {"Codigo","Fecha","Nombre del Paciente"};
+    DefaultTableModel modelo = new DefaultTableModel(null, datos);
     /**
      * Creates new form Citas
      */
-    public Consulta() {
+    public Consulta_Consultas() {
         initComponents();
         setLocationRelativeTo(null);
+        
+        
+        //TablaVerCitas.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        
+        
         
         
         //-------FONDO DE PANTALLA PRINCIPAL---------------
@@ -42,40 +52,60 @@ public class Consulta extends javax.swing.JFrame {
         fondo.setIcon(uno); 
         getLayeredPane().add(fondo,JLayeredPane.FRAME_CONTENT_LAYER); 
         fondo.setBounds(0,0,uno.getIconWidth(),uno.getIconHeight());
-        
-        Hospital nuevo = new Hospital();
-        txt_codigocita.setText(nuevo.getCodigo_cita());
-        txt_codigopaciente.setText(nuevo.getCodigo_paciente_cita());
     }
     
-    void insertar(){
-        String cod1= txt_codigocita.getText().trim();
-        String cod2 = txt_codigopaciente.getText().trim();
-        String descripcion = txt_descripcion.getText().trim();
-       
-
-        String sql = "INSERT INTO CONSULTA VALUES (SECUENCIA_CONSULTA.nextval, '"+descripcion+"', '"+cod2+"', '"+cod1+"')";
+    void BuscarPersona(){
+        Connection connection = con.iniciarConexion();
+        DefaultTableModel modelo = new DefaultTableModel(null, datos);
+       // int ano = fecha.getCalendar().get(Calendar.YEAR);
+        //int mes = fecha.getCalendar().get(Calendar.MONTH) + 1;
+        //int dia = fecha.getCalendar().get(Calendar.DAY_OF_MONTH);
+        String dpi=txt_dpi.getText();
+        String datos[]=new String[3];
+        String dia="";
+        String mes="";
+        String ano="";
+        String fecha="";
+        //System.out.println(dpi);
         
-                
-            
-            Connection connection = con.iniciarConexion();
-            try {
-                 Statement sta = connection.createStatement();
-                 sta.executeUpdate(sql);
-                 sta.close();
-            } catch (SQLException ex) {
-
-                        JOptionPane.showMessageDialog(null,ex);
+        
+         String sql3 = "SELECT CODIGO_CONSULTA, CITA.DIA AS DIA, CITA.MES AS MES, CITA.ANO AS ANO, NOMBRE FROM PERSONA, PACIENTE, CITA, CONSULTA WHERE PERSONA.CODIGO_PERSONA = PACIENTE.CODIGO_PERSONA AND CITA.CODIGO_CITA = CONSULTA.CODIGO_CITA AND PACIENTE.CODIGO_PACIENTE = CITA.CODIGO_PACIENTE AND PACIENTE.CODIGO_PACIENTE = CONSULTA.CODIGO_PACIENTE AND PERSONA.DPI = '"+dpi+"'";
+         
+         try {
+             //System.out.println("hola");
+            Statement st2 = connection.createStatement();
+            ResultSet rs2 = st2.executeQuery(sql3);
+            //System.out.println("adios");        
+            while (rs2.next()){
+                 //existe = true;
+                 //codigo_paciente = rs2.getString("CODIGO_PACIENTE");
+                //System.out.println("22222");
+                 datos[0] = (rs2.getString("CODIGO_CONSULTA")).trim();
+                 dia = (rs2.getString("DIA")).trim();
+                 mes = (rs2.getString("MES")).trim();
+                 ano = (rs2.getString("ANO")).trim();
+                 fecha= dia+"/"+mes+"/"+ano;
+                 datos[1] = fecha;
+                 datos[2] = (rs2.getString("NOMBRE")).trim();
+                 //System.out.println("333333");
+                 modelo.addRow(datos);
             }
-        
-        
-        JOptionPane.showMessageDialog(null,"Consulta Agregada","Realizado",JOptionPane.INFORMATION_MESSAGE);            
-        
-        txt_codigocita.setText("");
-        txt_codigopaciente.setText("");
-        txt_descripcion.setText("");
-        txt_codigocita.requestFocus();
-        
+            
+            //Hospital cualquier = new Hospital();
+            //cualquier.setCodigo_cita(datos[0]);
+            //cualquier.setCodigo_paciente_cita(datos[1]);
+            TablaVerCitas.setModel(modelo);
+            int[] anchos = {50, 150, 300};
+           // System.out.println("4444");
+            //hacemos un bucle FOR desde cero hasta la cantidad de columnas de nuestra tabla
+
+            for(int i = 0; i < TablaVerCitas.getColumnCount(); i++) {
+                TablaVerCitas.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+            }
+                        
+        } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+        }    
     }
 
     /**
@@ -90,16 +120,12 @@ public class Consulta extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        TablaVerCitas = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        txt_codigocita = new javax.swing.JTextField();
-        lbl_buscar = new javax.swing.JLabel();
+        txt_dpi = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        txt_codigopaciente = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txt_descripcion = new javax.swing.JTextArea();
-        lblGuardar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -109,7 +135,7 @@ public class Consulta extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Consultas");
+        jLabel1.setText("Citas");
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/close.png"))); // NOI18N
         jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -119,36 +145,34 @@ public class Consulta extends javax.swing.JFrame {
             }
         });
 
+        TablaVerCitas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        TablaVerCitas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TablaVerCitasMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(TablaVerCitas);
+
         jPanel1.setOpaque(false);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel3.setText("Codigo Cita:");
+        jLabel3.setText("DPI:");
 
-        lbl_buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/search.png"))); // NOI18N
-        lbl_buscar.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/search.png"))); // NOI18N
+        jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lbl_buscarMouseClicked(evt);
-            }
-        });
-
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel5.setText("Codigo Paciente:");
-
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel6.setText("Descripcion:");
-
-        txt_descripcion.setColumns(20);
-        txt_descripcion.setLineWrap(true);
-        txt_descripcion.setRows(5);
-        txt_descripcion.setWrapStyleWord(true);
-        jScrollPane1.setViewportView(txt_descripcion);
-
-        lblGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/save.png"))); // NOI18N
-        lblGuardar.setText("Guardar");
-        lblGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lblGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblGuardarMouseClicked(evt);
+                jLabel5MouseClicked(evt);
             }
         });
 
@@ -157,53 +181,24 @@ public class Consulta extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(71, 71, 71)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel5))
-                        .addGap(27, 27, 27)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txt_codigocita)
-                            .addComponent(txt_codigopaciente, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addComponent(lbl_buscar))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(132, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblGuardar)
-                .addGap(230, 230, 230))
+                .addGap(29, 29, 29)
+                .addComponent(jLabel3)
+                .addGap(31, 31, 31)
+                .addComponent(txt_dpi, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel5)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbl_buscar, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txt_codigocita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel5)
-                    .addComponent(txt_codigopaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(87, 87, 87)
-                        .addComponent(jLabel6)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblGuardar)
-                .addContainerGap(22, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(txt_dpi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -213,12 +208,17 @@ public class Consulta extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(245, 245, 245)
-                        .addComponent(jLabel1)))
-                .addContainerGap(43, Short.MAX_VALUE))
+                        .addGap(292, 292, 292)
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(166, 166, 166)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addContainerGap(638, Short.MAX_VALUE)
@@ -230,8 +230,10 @@ public class Consulta extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(43, 43, 43)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
@@ -257,21 +259,31 @@ public class Consulta extends javax.swing.JFrame {
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         // TODO add your handling code here:
         //this.hide();
+        //Informe_Paciente nuevo = new Informe_Paciente();
+        
+        
         this.hide();
     }//GEN-LAST:event_jLabel2MouseClicked
 
-    private void lbl_buscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_buscarMouseClicked
+    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         // TODO add your handling code here:
-        Consulta_Citas nuevo = new Consulta_Citas();
-        nuevo.setVisible(true);
-        this.hide();
-    }//GEN-LAST:event_lbl_buscarMouseClicked
+        BuscarPersona();
+    }//GEN-LAST:event_jLabel5MouseClicked
 
-    private void lblGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblGuardarMouseClicked
+    private void TablaVerCitasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaVerCitasMouseClicked
         // TODO add your handling code here:
-        insertar();
-        this.hide();
-    }//GEN-LAST:event_lblGuardarMouseClicked
+       //  String [] seleccion = new String[4];
+        //int lugar = 0;
+        System.out.println("1");
+        int row=TablaVerCitas.getSelectedRow();
+        System.out.println("2");
+        String valor = String.valueOf(TablaVerCitas.getValueAt(row, 0));
+        System.out.println("3");
+        Hospital cualquier = new Hospital();
+         cualquier.setCodigo_consulta_paciente(valor);
+         System.out.println("4");
+       
+    }//GEN-LAST:event_TablaVerCitasMouseClicked
 
     /**
      * @param args the command line arguments
@@ -290,14 +302,22 @@ public class Consulta extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Consulta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Consulta_Consultas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Consulta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Consulta_Consultas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Consulta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Consulta_Consultas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Consulta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Consulta_Consultas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -310,24 +330,20 @@ public class Consulta extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Consulta().setVisible(true);
+                new Consulta_Consultas().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable TablaVerCitas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblGuardar;
-    private javax.swing.JLabel lbl_buscar;
-    private javax.swing.JTextField txt_codigocita;
-    private javax.swing.JTextField txt_codigopaciente;
-    private javax.swing.JTextArea txt_descripcion;
+    private javax.swing.JTextField txt_dpi;
     // End of variables declaration//GEN-END:variables
 }

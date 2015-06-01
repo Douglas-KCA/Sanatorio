@@ -264,7 +264,13 @@ public class Consulta_Citas extends javax.swing.JFrame {
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         // TODO add your handling code here:
-        BuscarPersona();
+         if(txt_dpi.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null,"Por Favor llene el campo","Error",JOptionPane.ERROR_MESSAGE);
+        }else{
+             BuscarPersona();
+         }
+        
+        
     }//GEN-LAST:event_jLabel5MouseClicked
 
     /**
