@@ -7,11 +7,19 @@ package Interfaz;
  */
 
 
+import Conexion.Conexion;
 import Interfaz.*;
+import hospital.Hospital;
 import static java.lang.System.exit;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Calendar;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -19,7 +27,8 @@ import javax.swing.JPanel;
  * @author Douglas
  */
 public class Informe_Paciente extends javax.swing.JFrame {
-
+Conexion con = new Conexion();
+String codpersona = "";
     /**
      * Creates new form Citas
      */
@@ -27,7 +36,7 @@ public class Informe_Paciente extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         
-        
+        combo();
         //-------FONDO DE PANTALLA PRINCIPAL---------------
         ((JPanel)getContentPane()).setOpaque(false); 
         ImageIcon uno=new ImageIcon(this.getClass().getResource("/Imagenes/fondo1.jpg")); 
@@ -50,31 +59,32 @@ public class Informe_Paciente extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        nombres = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        apellidos = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        dpi1 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        sexo1 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        edad1 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
+        direccion1 = new javax.swing.JTextField();
+        fecha = new com.toedter.calendar.JDateChooser();
         jPanel2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jLabel11 = new javax.swing.JLabel();
+        cod_consulta = new javax.swing.JTextField();
+        buscar_consulta = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        habitacion = new javax.swing.JComboBox();
         jLabel13 = new javax.swing.JLabel();
         jComboBox4 = new javax.swing.JComboBox();
         jLabel17 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
+        txtdpi = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
 
@@ -99,7 +109,6 @@ public class Informe_Paciente extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Personales"));
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(523, 16, 143, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Fecha:");
@@ -108,39 +117,51 @@ public class Informe_Paciente extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("Nombres:");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 45, -1, -1));
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(91, 42, 225, -1));
+        jPanel1.add(nombres, new org.netbeans.lib.awtextra.AbsoluteConstraints(91, 42, 225, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setText("Apellidos:");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 45, -1, -1));
-        jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(378, 42, 288, -1));
+        jPanel1.add(apellidos, new org.netbeans.lib.awtextra.AbsoluteConstraints(378, 42, 288, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel6.setText("DPI:");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 79, -1, -1));
-        jPanel1.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(89, 73, 227, -1));
+        jPanel1.add(dpi1, new org.netbeans.lib.awtextra.AbsoluteConstraints(89, 73, 227, -1));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel7.setText("Sexo:");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 76, -1, -1));
-        jPanel1.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(378, 73, 149, -1));
+        jPanel1.add(sexo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(378, 73, 149, -1));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel8.setText("Edad:");
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(537, 76, -1, -1));
-        jPanel1.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(577, 73, 89, -1));
+        jPanel1.add(edad1, new org.netbeans.lib.awtextra.AbsoluteConstraints(577, 73, 89, -1));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel9.setText("Direccion:");
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 107, -1, -1));
-        jPanel1.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(89, 104, 577, -1));
+        jPanel1.add(direccion1, new org.netbeans.lib.awtextra.AbsoluteConstraints(89, 104, 577, -1));
+        jPanel1.add(fecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 10, 130, -1));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Descripcion"));
         jPanel2.setOpaque(false);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        jLabel11.setText("Codigo de Consulta:");
+
+        cod_consulta.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                cod_consultaFocusGained(evt);
+            }
+        });
+
+        buscar_consulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/search.png"))); // NOI18N
+        buscar_consulta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buscar_consultaMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -148,14 +169,23 @@ public class Informe_Paciente extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cod_consulta, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(buscar_consulta)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 10, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(buscar_consulta)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel11)
+                        .addComponent(cod_consulta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         jPanel4.setOpaque(false);
@@ -165,8 +195,8 @@ public class Informe_Paciente extends javax.swing.JFrame {
         jLabel10.setText("Habitacion:");
         jPanel4.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel4.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, 111, -1));
+        habitacion.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel4.add(habitacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, 111, -1));
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel13.setText("Responsable:");
@@ -176,15 +206,30 @@ public class Informe_Paciente extends javax.swing.JFrame {
         jPanel4.add(jComboBox4, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 10, 335, -1));
 
         jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Plus-32.png"))); // NOI18N
+        jLabel17.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel17MouseClicked(evt);
+            }
+        });
         jPanel4.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(655, 11, -1, -1));
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel14.setText("No. DPI:");
 
         jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/search.png"))); // NOI18N
+        jLabel15.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel15MouseClicked(evt);
+            }
+        });
 
         jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/save.png"))); // NOI18N
         jLabel16.setText("Guardar");
+        jLabel16.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel16MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -205,7 +250,7 @@ public class Informe_Paciente extends javax.swing.JFrame {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel14)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtdpi, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel15)))
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -228,7 +273,7 @@ public class Informe_Paciente extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtdpi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel14))
                     .addComponent(jLabel15))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -246,6 +291,8 @@ public class Informe_Paciente extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addContainerGap(376, Short.MAX_VALUE)))
         );
+
+        jPanel2.getAccessibleContext().setAccessibleName("Consulta");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -266,6 +313,221 @@ public class Informe_Paciente extends javax.swing.JFrame {
         //this.hide();
         exit(0);
     }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void jLabel15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseClicked
+        // TODO add your handling code here:
+        Connection connection = con.iniciarConexion();
+                
+        String pnombre = "";
+        String snombre = "";
+        String papellido = "";
+        String sapellido = "";
+        String sexo = "";
+        String edad = "";
+        String direccion = "";
+        String dpi = txtdpi.getText().toString().trim();
+        System.out.println(dpi);
+        //int ano = fecha.getCalendar().get(Calendar.YEAR);
+         //int mes = fecha.getCalendar().get(Calendar.MONTH) + 1;
+         //int dia = fecha.getCalendar().get(Calendar.DAY_OF_MONTH);
+        
+        
+        String sql3 = "SELECT CODIGO_PERSONA, NOMBRE, SEGUNDO_NOMBRE, PRIMER_APELLIDO, SEGUNDO_APELLIDO, SEXO, EDAD, DIRECCION FROM PERSONA WHERE DPI='"+dpi+"'";
+         
+         try {
+            Statement st2 = connection.createStatement();
+            ResultSet rs2 = st2.executeQuery(sql3);
+                    
+            while (rs2.next()){
+                 codpersona = rs2.getString("CODIGO_PERSONA").trim();
+                 pnombre = rs2.getString("NOMBRE").trim();
+                 snombre = (rs2.getString("SEGUNDO_NOMBRE")).trim();
+                 papellido = (rs2.getString("PRIMER_APELLIDO")).trim();
+                 sapellido = (rs2.getString("SEGUNDO_APELLIDO")).trim();
+                 sexo = (rs2.getString("SEXO")).trim();
+                 edad = (rs2.getString("EDAD")).trim();
+                 direccion = (rs2.getString("DIRECCION")).trim();
+            }
+                        
+        } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+        }
+         
+//         fecha.setText();
+         System.out.println("hola");
+         nombres.setText(pnombre+" "+snombre);
+         apellidos.setText(papellido+" "+sapellido);
+         edad1.setText(edad);
+         dpi1.setText(dpi);
+         sexo1.setText(sexo);
+         direccion1.setText(direccion);
+         
+         
+    }//GEN-LAST:event_jLabel15MouseClicked
+
+    private void buscar_consultaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buscar_consultaMouseClicked
+        // TODO add your handling code here:
+        Consulta_Consultas nuevo = new Consulta_Consultas();
+        nuevo.setVisible(true);
+    
+    }//GEN-LAST:event_buscar_consultaMouseClicked
+
+    void combo(){//---------------------------------------------------------------------terminar
+        Connection connection = con.iniciarConexion();
+        habitacion.removeAllItems();
+        
+        String codigo = "";
+        String habitaciones = "";
+        String cama = "";
+        String dispo="disponible";
+        
+        String sql3 = "SELECT CODIGO_HABITACION,HABITACION, CAMA FROM HABITACION WHERE ESATDO = '"+dispo+"'";
+         
+         try {
+            Statement st2 = connection.createStatement();
+            ResultSet rs2 = st2.executeQuery(sql3);
+                    
+            while (rs2.next()){
+                 
+                 codigo = rs2.getString("CODIGO_HABITACION").trim();
+                 habitaciones = (rs2.getString("HABITACION")).trim();
+                 cama = (rs2.getString("CAMA")).trim();
+                 
+                 habitacion.addItem(codigo+". "+habitaciones+" "+cama);
+                 codigo = "";
+                 habitaciones = "";
+                 cama ="";
+                 
+            }
+                        
+        } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+        }
+   }
+    
+   /*     void combo1(){//---------------------------------------------------------------------terminar
+        Connection connection = con.iniciarConexion();
+        habitacion.removeAllItems();
+        
+        String codigo = "";
+        String habitaciones = "";
+        String cama = "";
+        String dispo="disponible";
+        
+        String sql3 = "SELECT CODIGO_HABITACION,HABITACION, CAMA FROM HABITACION WHERE ESATDO = '"+dispo+"'";
+         
+         try {
+            Statement st2 = connection.createStatement();
+            ResultSet rs2 = st2.executeQuery(sql3);
+                    
+            while (rs2.next()){
+                 
+                 codigo = rs2.getString("CODIGO_HABITACION").trim();
+                 habitaciones = (rs2.getString("HABITACION")).trim();
+                 cama = (rs2.getString("CAMA")).trim();
+                 
+                 habitacion.addItem(codigo+". "+habitaciones+" "+cama);
+                 codigo = "";
+                 habitaciones = "";
+                 cama ="";
+                 
+            }
+                        
+        } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+        }
+   }*/
+
+    
+    private void cod_consultaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cod_consultaFocusGained
+        // TODO add your handling code here:
+        Hospital nuevo = new Hospital();
+        cod_consulta.setText(nuevo.getCodigo_consulta_paciente());
+    }//GEN-LAST:event_cod_consultaFocusGained
+
+    private void jLabel16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MouseClicked
+        // TODO add your handling code here:
+        Connection connection = con.iniciarConexion();
+        
+        String cuarto = cortador(habitacion.getSelectedItem().toString());
+        int ano = fecha.getCalendar().get(Calendar.YEAR);
+        int mes = fecha.getCalendar().get(Calendar.MONTH) + 1;
+        int dia = fecha.getCalendar().get(Calendar.DAY_OF_MONTH);
+        String paciente = "";
+        String consulta= cod_consulta.getText().toString().trim();
+        
+        String sql3 = "SELECT CODIGO_PACIENTE FROM PACIENTE WHERE CODIGO_PERSONA = '"+codpersona+"'";
+         
+         try {
+            Statement st2 = connection.createStatement();
+            ResultSet rs2 = st2.executeQuery(sql3);
+                    
+            while (rs2.next()){
+                 
+                 paciente = rs2.getString("CODIGO_PACIENTE").trim();
+                 System.out.println(paciente);
+                 
+                 
+            }
+                        
+        } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+        }
+         
+         
+         
+         String sql = "INSERT INTO INFORME_PACIENTE VALUES (SECUENCIA_INFORME.nextval, '"+dia+"', '"+mes+"', '"+ano+"','"+consulta+"','"+cuarto+"', '"+paciente+"') ";
+        
+                
+            
+           // Connection connection = con.iniciarConexion();
+            try {
+                 Statement sta = connection.createStatement();
+                 sta.executeUpdate(sql);
+                 sta.close();
+            } catch (SQLException ex) {
+
+                        JOptionPane.showMessageDialog(null,ex);
+            }
+        
+         
+        
+    }//GEN-LAST:event_jLabel16MouseClicked
+
+    private void jLabel17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel17MouseClicked
+
+        String cortador(String dato){
+        String prof = dato;
+            String profe="";
+            int estado = 0;
+            
+            for(int i=0;i<=prof.length();i++){
+                if(((int)prof.charAt(i)!= 10)){
+                    switch(estado){
+                        case 0:
+                            if((int)prof.charAt(i)!= 46){
+                                profe=profe+prof.charAt(i);
+                                System.out.println(profe);
+                            }else{
+                                estado = 1;
+                                System.out.println("adiosito");
+                            }
+                        break;
+                        case 1:
+                            System.out.println("adios");
+                            System.out.println(prof.charAt(i));
+                         break;
+                    }
+                    
+                }
+                if(estado == 1){
+                    break;
+                }
+        }
+            return profe;
+    }
 
     /**
      * @param args the command line arguments
@@ -310,10 +572,18 @@ public class Informe_Paciente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JTextField apellidos;
+    private javax.swing.JLabel buscar_consulta;
+    private javax.swing.JTextField cod_consulta;
+    private javax.swing.JTextField direccion1;
+    private javax.swing.JTextField dpi1;
+    private javax.swing.JTextField edad1;
+    private com.toedter.calendar.JDateChooser fecha;
+    private javax.swing.JComboBox habitacion;
     private javax.swing.JComboBox jComboBox4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -331,15 +601,8 @@ public class Informe_Paciente extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
+    private javax.swing.JTextField nombres;
+    private javax.swing.JTextField sexo1;
+    private javax.swing.JTextField txtdpi;
     // End of variables declaration//GEN-END:variables
 }
