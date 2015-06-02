@@ -37,6 +37,11 @@ String codpersona = "";
         setLocationRelativeTo(null);
         
         combo();
+        combo1();
+        //responsable.setEnabled(false);
+        //jLabel17.setVisible(false);
+        //jLabel16.setVisible(false);
+        bloquear();
         //-------FONDO DE PANTALLA PRINCIPAL---------------
         ((JPanel)getContentPane()).setOpaque(false); 
         ImageIcon uno=new ImageIcon(this.getClass().getResource("/Imagenes/fondo1.jpg")); 
@@ -44,6 +49,32 @@ String codpersona = "";
         fondo.setIcon(uno); 
         getLayeredPane().add(fondo,JLayeredPane.FRAME_CONTENT_LAYER); 
         fondo.setBounds(0,0,uno.getIconWidth(),uno.getIconHeight());
+    }
+    
+    void bloquear(){
+        //txtdpi.setEditable(false);
+        fecha.setEnabled(false);
+        nombres.setEditable(false);
+        apellidos.setEditable(false);
+        sexo1.setEditable(false);
+        dpi1.setEditable(false);
+        edad1.setEditable(false);
+        direccion1.setEditable(false);
+        cod_consulta.setEditable(false);
+        buscar_consulta.setVisible(false);
+        habitacion.setEnabled(false);
+        responsable.setEnabled(false);
+        jLabel17.setVisible(false);
+        jLabel16.setVisible(false);
+    }
+    
+    void habilitar(){
+        buscar_consulta.setVisible(true);
+        jLabel16.setVisible(true);
+        fecha.setEnabled(true);
+        habitacion.setEnabled(true);
+        cod_consulta.setEditable(true);
+        jLabel17.setVisible(true);
     }
 
     /**
@@ -81,7 +112,7 @@ String codpersona = "";
         jLabel10 = new javax.swing.JLabel();
         habitacion = new javax.swing.JComboBox();
         jLabel13 = new javax.swing.JLabel();
-        jComboBox4 = new javax.swing.JComboBox();
+        responsable = new javax.swing.JComboBox();
         jLabel17 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         txtdpi = new javax.swing.JTextField();
@@ -108,46 +139,108 @@ String codpersona = "";
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Personales"));
         jPanel1.setOpaque(false);
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Fecha:");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(477, 19, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("Nombres:");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 45, -1, -1));
-        jPanel1.add(nombres, new org.netbeans.lib.awtextra.AbsoluteConstraints(91, 42, 225, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setText("Apellidos:");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 45, -1, -1));
-        jPanel1.add(apellidos, new org.netbeans.lib.awtextra.AbsoluteConstraints(378, 42, 288, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel6.setText("DPI:");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 79, -1, -1));
-        jPanel1.add(dpi1, new org.netbeans.lib.awtextra.AbsoluteConstraints(89, 73, 227, -1));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel7.setText("Sexo:");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 76, -1, -1));
-        jPanel1.add(sexo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(378, 73, 149, -1));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel8.setText("Edad:");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(537, 76, -1, -1));
-        jPanel1.add(edad1, new org.netbeans.lib.awtextra.AbsoluteConstraints(577, 73, 89, -1));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel9.setText("Direccion:");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 107, -1, -1));
-        jPanel1.add(direccion1, new org.netbeans.lib.awtextra.AbsoluteConstraints(89, 104, 577, -1));
-        jPanel1.add(fecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 10, 130, -1));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(471, 471, 471)
+                .addComponent(jLabel3)
+                .addGap(7, 7, 7)
+                .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jLabel4)
+                .addGap(22, 22, 22)
+                .addComponent(nombres, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(jLabel5)
+                .addGap(4, 4, 4)
+                .addComponent(apellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jLabel6)
+                .addGap(50, 50, 50)
+                .addComponent(dpi1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(jLabel7)
+                .addGap(27, 27, 27)
+                .addComponent(sexo1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(jLabel8)
+                .addGap(10, 10, 10)
+                .addComponent(edad1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jLabel9)
+                .addGap(18, 18, 18)
+                .addComponent(direccion1, javax.swing.GroupLayout.PREFERRED_SIZE, 577, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(jLabel3))
+                    .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(9, 9, 9)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(nombres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(apellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))))
+                .addGap(11, 11, 11)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel6))
+                    .addComponent(dpi1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(jLabel7))
+                    .addComponent(sexo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(jLabel8))
+                    .addComponent(edad1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(jLabel9))
+                    .addComponent(direccion1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Descripcion"));
         jPanel2.setOpaque(false);
 
+        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel11.setText("Codigo de Consulta:");
 
         cod_consulta.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -157,6 +250,7 @@ String codpersona = "";
         });
 
         buscar_consulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/search.png"))); // NOI18N
+        buscar_consulta.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         buscar_consulta.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 buscar_consultaMouseClicked(evt);
@@ -202,10 +296,11 @@ String codpersona = "";
         jLabel13.setText("Responsable:");
         jPanel4.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 10, -1, -1));
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel4.add(jComboBox4, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 10, 335, -1));
+        responsable.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel4.add(responsable, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 10, 335, -1));
 
         jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Plus-32.png"))); // NOI18N
+        jLabel17.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel17.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel17MouseClicked(evt);
@@ -217,6 +312,7 @@ String codpersona = "";
         jLabel14.setText("No. DPI:");
 
         jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/search.png"))); // NOI18N
+        jLabel15.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel15.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel15MouseClicked(evt);
@@ -225,6 +321,7 @@ String codpersona = "";
 
         jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/save.png"))); // NOI18N
         jLabel16.setText("Guardar");
+        jLabel16.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel16.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel16MouseClicked(evt);
@@ -277,14 +374,14 @@ String codpersona = "";
                         .addComponent(jLabel14))
                     .addComponent(jLabel15))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel16)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addContainerGap()
@@ -360,7 +457,8 @@ String codpersona = "";
          dpi1.setText(dpi);
          sexo1.setText(sexo);
          direccion1.setText(direccion);
-         
+         //bloquear();
+         habilitar();
          
     }//GEN-LAST:event_jLabel15MouseClicked
 
@@ -404,16 +502,16 @@ String codpersona = "";
         }
    }
     
-   /*     void combo1(){//---------------------------------------------------------------------terminar
+     void combo1(){//---------------------------------------------------------------------terminar
         Connection connection = con.iniciarConexion();
-        habitacion.removeAllItems();
+        responsable.removeAllItems();
         
         String codigo = "";
-        String habitaciones = "";
-        String cama = "";
-        String dispo="disponible";
+        String nombre = "";
+        //String cama = "";
+        //String dispo="disponible";
         
-        String sql3 = "SELECT CODIGO_HABITACION,HABITACION, CAMA FROM HABITACION WHERE ESATDO = '"+dispo+"'";
+        String sql3 = "SELECT EMPLEADO.CODIGO_EMPLEADO, PERSONA.NOMBRE FROM EMPLEADO, PERSONA WHERE EMPLEADO.CODIGO_PERSONA = PERSONA.CODIGO_PERSONA";
          
          try {
             Statement st2 = connection.createStatement();
@@ -421,22 +519,21 @@ String codpersona = "";
                     
             while (rs2.next()){
                  
-                 codigo = rs2.getString("CODIGO_HABITACION").trim();
-                 habitaciones = (rs2.getString("HABITACION")).trim();
-                 cama = (rs2.getString("CAMA")).trim();
+                 codigo = rs2.getString("CODIGO_EMPLEADO").trim();
+                 nombre = (rs2.getString("NOMBRE")).trim();
                  
-                 habitacion.addItem(codigo+". "+habitaciones+" "+cama);
+                 
+                 responsable.addItem(codigo+". "+nombre);
                  codigo = "";
-                 habitaciones = "";
-                 cama ="";
+                 nombre = "";
+                 
                  
             }
                         
         } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, ex);
         }
-   }*/
-
+   }
     
     private void cod_consultaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cod_consultaFocusGained
         // TODO add your handling code here:
@@ -488,13 +585,40 @@ String codpersona = "";
 
                         JOptionPane.showMessageDialog(null,ex);
             }
-        
-         
+            JOptionPane.showMessageDialog(null,"Informe Agregado","Realizado",JOptionPane.INFORMATION_MESSAGE);            
+            jLabel16.setVisible(false);
+            responsable.setEnabled(true);
+            fecha.setEnabled(false);
+            habitacion.setEnabled(false);
+            cod_consulta.setEditable(false);
+            buscar_consulta.setVisible(false);
+            jLabel15.setVisible(false);
+            txtdpi.setEditable(false);
         
     }//GEN-LAST:event_jLabel16MouseClicked
 
     private void jLabel17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseClicked
         // TODO add your handling code here:
+         Connection connection = con.iniciarConexion();
+         String empleado = cortador(responsable.getSelectedItem().toString());
+         
+        String sql = "INSERT INTO SERVICIO_EMPLEADOS VALUES (SECUENCIA_SERVICIO.nextval, SECUENCIA_INFORME.currval, '"+empleado+"' ) ";
+        
+                
+            
+           // Connection connection = con.iniciarConexion();
+            try {
+                 Statement sta = connection.createStatement();
+                 sta.executeUpdate(sql);
+                 sta.close();
+            } catch (SQLException ex) {
+
+                        JOptionPane.showMessageDialog(null,ex);
+            }
+        
+    JOptionPane.showMessageDialog(null,"Responsable Agregado","Realizado",JOptionPane.INFORMATION_MESSAGE);            
+        
+        
     }//GEN-LAST:event_jLabel17MouseClicked
 
         String cortador(String dato){
@@ -579,7 +703,6 @@ String codpersona = "";
     private javax.swing.JTextField edad1;
     private com.toedter.calendar.JDateChooser fecha;
     private javax.swing.JComboBox habitacion;
-    private javax.swing.JComboBox jComboBox4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -601,6 +724,7 @@ String codpersona = "";
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JTextField nombres;
+    private javax.swing.JComboBox responsable;
     private javax.swing.JTextField sexo1;
     private javax.swing.JTextField txtdpi;
     // End of variables declaration//GEN-END:variables
