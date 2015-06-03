@@ -7,26 +7,38 @@ package Interfaz;
  */
 
 
+import Conexion.Conexion;
 import Interfaz.*;
+import hospital.Hospital;
 import static java.lang.System.exit;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Calendar;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Douglas
  */
 public class Lista_Inventario extends javax.swing.JFrame {
-
+    Conexion con = new Conexion();
+    String producto="";
+    String[] datos = {"Codigo Producto","Nombre Producto","Fecha Vencimiento"};
+    DefaultTableModel modelo = new DefaultTableModel(null, datos);
     /**
      * Creates new form Citas
      */
     public Lista_Inventario() {
         initComponents();
         setLocationRelativeTo(null);
-        
+        llenado();
         
         //-------FONDO DE PANTALLA PRINCIPAL---------------
         ((JPanel)getContentPane()).setOpaque(false); 
@@ -50,7 +62,7 @@ public class Lista_Inventario extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabla = new javax.swing.JTable();
         lbl_Agregar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -64,14 +76,14 @@ public class Lista_Inventario extends javax.swing.JFrame {
         jLabel1.setText("Inventario");
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/close.png"))); // NOI18N
-        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel2MouseClicked(evt);
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -82,10 +94,20 @@ public class Lista_Inventario extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tabla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tabla);
 
         lbl_Agregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Plus-32.png"))); // NOI18N
         lbl_Agregar.setText("Agregar");
+        lbl_Agregar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_AgregarMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -142,11 +164,88 @@ public class Lista_Inventario extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    void llenado(){
+        Connection connection = con.iniciarConexion();
+        DefaultTableModel modelo = new DefaultTableModel(null, datos);
+                
+        
+        String datos[] = new String[3];
+        String codigo="";
+        String nombre="";
+        String dia = "";
+        String mes = "";
+        String ano = "";
+        
+        String sql3 = "SELECT CODIGO_INVENTARIO, NOMBRE, DIA, MES, ANO FROM INVENTARIO";
+         
+         try {
+            Statement st2 = connection.createStatement();
+            ResultSet rs2 = st2.executeQuery(sql3);
+                    
+            while (rs2.next()){
+                 datos[0] = rs2.getString("CODIGO_INVENTARIO").trim();
+                 datos[1] = rs2.getString("NOMBRE").trim();
+                 dia = (rs2.getString("DIA")).trim();
+                 mes = (rs2.getString("MES")).trim();
+                 ano = (rs2.getString("ANO")).trim();
+                 datos[2] = dia+"/"+mes+"/"+ano;
+                 modelo.addRow(datos);
+                 
+            }
+            
+            tabla.setModel(modelo);
+            int[] anchos = {50, 150, 300};
+           
+            for(int i = 0; i < tabla.getColumnCount(); i++) {
+                tabla.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+            }
+                                    
+        } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+        }
+
+    }
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         // TODO add your handling code here:
-        //this.hide();
-        exit(0);
+        Informe_Final nuevo = new Informe_Final();
+        nuevo.setVisible(true);
+        this.hide();
+        //exit(0);
     }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
+        // TODO add your handling code here:
+        
+        int row=tabla.getSelectedRow();
+        producto = String.valueOf(tabla.getValueAt(row, 0));
+        
+    }//GEN-LAST:event_tablaMouseClicked
+
+    private void lbl_AgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_AgregarMouseClicked
+        // TODO add your handling code here:
+        Hospital nuevo = new Hospital();
+        String dia = nuevo.getDia_informe();
+        String mes = nuevo.getMes_informe();
+        String ano = nuevo.getAno_informe();
+        String codigo_informe = nuevo.getCodigo_informe_paciente();
+        
+        Connection connection = con.iniciarConexion();
+         String sql = "INSERT INTO SUPLEMENTOS_PACIENTE VALUES (SECUENCIA_SUPLEMENTOS_PACIENTE.nextval, '"+dia+"', '"+mes+"', '"+ano+"','"+codigo_informe+"','"+producto+"') ";
+        
+                
+            
+           // Connection connection = con.iniciarConexion();
+            try {
+                 Statement sta = connection.createStatement();
+                 sta.executeUpdate(sql);
+                 sta.close();
+            } catch (SQLException ex) {
+
+                        JOptionPane.showMessageDialog(null,ex);
+            }
+            JOptionPane.showMessageDialog(null,"Medicamento Agregado","Realizado",JOptionPane.INFORMATION_MESSAGE);            
+            producto="";
+    }//GEN-LAST:event_lbl_AgregarMouseClicked
 
     /**
      * @param args the command line arguments
@@ -191,7 +290,7 @@ public class Lista_Inventario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lbl_Agregar;
+    private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 }

@@ -7,19 +7,31 @@ package Interfaz;
  */
 
 
+import Conexion.Conexion;
 import Interfaz.*;
+import hospital.Hospital;
 import static java.lang.System.exit;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Calendar;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Douglas
  */
 public class Buscar_Informe_Paciente extends javax.swing.JFrame {
-
+Conexion con = new Conexion();
+String codigo_informe="";
+String[] datos = {"Codigo informe","Nombre del paciente","Habitacion"};
+    DefaultTableModel modelo = new DefaultTableModel(null, datos);
     /**
      * Creates new form Citas
      */
@@ -49,14 +61,14 @@ public class Buscar_Informe_Paciente extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        dpi = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        buscar = new javax.swing.JLabel();
+        fecha = new com.toedter.calendar.JDateChooser();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabla = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -73,7 +85,12 @@ public class Buscar_Informe_Paciente extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("Fecha:");
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/search.png"))); // NOI18N
+        buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/search.png"))); // NOI18N
+        buscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buscarMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -86,10 +103,10 @@ public class Buscar_Informe_Paciente extends javax.swing.JFrame {
                     .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
-                    .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(dpi, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+                    .addComponent(fecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel5)
+                .addComponent(buscar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -100,12 +117,12 @@ public class Buscar_Informe_Paciente extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(dpi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
-                            .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabel5))
+                            .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(buscar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -114,14 +131,14 @@ public class Buscar_Informe_Paciente extends javax.swing.JFrame {
         jLabel1.setText("Buscar Informes");
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/close.png"))); // NOI18N
-        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel2MouseClicked(evt);
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -132,10 +149,20 @@ public class Buscar_Informe_Paciente extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tabla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tabla);
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Next.png"))); // NOI18N
-        jLabel6.setText("jLabel6");
+        jLabel6.setText("Siguiente");
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel6MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -202,6 +229,80 @@ public class Buscar_Informe_Paciente extends javax.swing.JFrame {
         exit(0);
     }//GEN-LAST:event_jLabel2MouseClicked
 
+    private void buscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buscarMouseClicked
+        // TODO add your handling code here:
+        Connection connection = con.iniciarConexion();
+        DefaultTableModel modelo = new DefaultTableModel(null, datos);
+                
+        
+        String dpi1 = dpi.getText().toString().trim();
+        //System.out.println(dpi);
+        int ano = fecha.getCalendar().get(Calendar.YEAR);
+        int mes = fecha.getCalendar().get(Calendar.MONTH) + 1;
+        int dia = fecha.getCalendar().get(Calendar.DAY_OF_MONTH);
+        String datos[] = new String[3];
+        String nombre="";
+        String apellido="";
+        String habitacion = "";
+        
+        String sql3 = "SELECT INFORME_PACIENTE.CODIGO_INFORME AS CODIGO, PERSONA.NOMBRE AS NOMBRE, PERSONA.PRIMER_APELLIDO AS APELLIDO,  HABITACION.HABITACION AS HABITACION FROM INFORME_PACIENTE, PERSONA, HABITACION, PACIENTE WHERE INFORME_PACIENTE.CODIGO_PACIENTE = PACIENTE.CODIGO_PACIENTE AND PERSONA.CODIGO_PERSONA = PACIENTE.CODIGO_PERSONA AND INFORME_PACIENTE.CODIGO_HABITACION = HABITACION.CODIGO_HABITACION AND PERSONA.DPI  = '"+dpi1+"' AND INFORME_PACIENTE.DIA ='"+dia+"' AND INFORME_PACIENTE.MES ='"+mes+"' AND INFORME_PACIENTE.ANO ='"+ano+"'";
+         
+         try {
+            Statement st2 = connection.createStatement();
+            ResultSet rs2 = st2.executeQuery(sql3);
+                    
+            while (rs2.next()){
+                 datos[0] = rs2.getString("CODIGO").trim();
+                 nombre = rs2.getString("NOMBRE").trim();
+                 apellido = (rs2.getString("APELLIDO")).trim();
+                 datos[1] = nombre+" "+apellido;
+                 datos[2] = (rs2.getString("HABITACION")).trim();
+                 modelo.addRow(datos);
+                 
+            }
+            
+            tabla.setModel(modelo);
+            int[] anchos = {50, 150, 300};
+           
+            for(int i = 0; i < tabla.getColumnCount(); i++) {
+                tabla.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+            }
+            Hospital cualquier = new Hospital();
+            cualquier.setDpi(dpi1);
+                        
+        } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+        }
+
+    }//GEN-LAST:event_buscarMouseClicked
+
+    private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
+        // TODO add your handling code here:
+        
+        int row=tabla.getSelectedRow();
+        String valor = String.valueOf(tabla.getValueAt(row, 0));
+        Hospital cualquier = new Hospital();
+         cualquier.setCodigo_informe_paciente(valor);
+    }//GEN-LAST:event_tablaMouseClicked
+
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
+        // TODO add your handling code here:
+        int ano = fecha.getCalendar().get(Calendar.YEAR);
+        int mes = fecha.getCalendar().get(Calendar.MONTH) + 1;
+        int dia = fecha.getCalendar().get(Calendar.DAY_OF_MONTH);
+        String dia1= Integer.toString(dia);
+        String mes1 = Integer.toString(mes);
+        String ano1 = Integer.toString(ano);
+        Hospital cualquier = new Hospital();
+        cualquier.setDia_informe(dia1);
+        cualquier.setMes_informe(mes1);
+        cualquier.setAno_informe(ano1);
+        Informe_Final frame = new Informe_Final();
+        frame.setVisible(true);
+        this.hide();
+        
+    }//GEN-LAST:event_jLabel6MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -241,17 +342,17 @@ public class Buscar_Informe_Paciente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.toedter.calendar.JDateChooser jDateChooser2;
+    private javax.swing.JLabel buscar;
+    private javax.swing.JTextField dpi;
+    private com.toedter.calendar.JDateChooser fecha;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 }

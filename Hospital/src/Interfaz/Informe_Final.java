@@ -7,26 +7,42 @@ package Interfaz;
  */
 
 
+import Conexion.Conexion;
 import Interfaz.*;
+import hospital.Hospital;
 import static java.lang.System.exit;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Douglas
  */
 public class Informe_Final extends javax.swing.JFrame {
-
+    Conexion con = new Conexion();
+    String servicio="";
+    String producto="";
+    String[] datos1 = {"Correlativo","Nombre Servicio"};
+    DefaultTableModel modelo1 = new DefaultTableModel(null, datos1);
+    
+    String[] datos2 = {"Correlativo","Producto"};
+    DefaultTableModel modelo2 = new DefaultTableModel(null, datos2);
     /**
      * Creates new form Citas
      */
     public Informe_Final() {
         initComponents();
         setLocationRelativeTo(null);
-        
+        llenado();
+        tablas();
         
         //-------FONDO DE PANTALLA PRINCIPAL---------------
         ((JPanel)getContentPane()).setOpaque(false); 
@@ -57,9 +73,9 @@ public class Informe_Final extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabla1 = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tabla2 = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         btn_agregar1 = new javax.swing.JButton();
         btn_eliminar1 = new javax.swing.JButton();
@@ -126,14 +142,14 @@ public class Informe_Final extends javax.swing.JFrame {
         jLabel1.setText("Informe");
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/close.png"))); // NOI18N
-        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel2MouseClicked(evt);
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabla1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -144,9 +160,14 @@ public class Informe_Final extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tabla1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabla1MouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tabla1);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tabla2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -157,13 +178,28 @@ public class Informe_Final extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        tabla2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabla2MouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tabla2);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Acciones"));
 
         btn_agregar1.setText("Agregar");
+        btn_agregar1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_agregar1MouseClicked(evt);
+            }
+        });
 
         btn_eliminar1.setText("Eliminar");
+        btn_eliminar1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_eliminar1MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -188,8 +224,18 @@ public class Informe_Final extends javax.swing.JFrame {
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Acciones"));
 
         btn_agregar2.setText("Agregar");
+        btn_agregar2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_agregar2MouseClicked(evt);
+            }
+        });
 
         btn_eliminar2.setText("Eliminar");
+        btn_eliminar2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_eliminar2MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -285,11 +331,206 @@ public class Informe_Final extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    void tablas(){
+            Connection connection = con.iniciarConexion();
+        DefaultTableModel modelo1 = new DefaultTableModel(null, datos1);
+                
+        
+        String datos[] = new String[2];
+        String correlativo="";
+        String nombre="";
+        Hospital nuevo = new Hospital();
+        String codigo_informe = nuevo.getCodigo_informe_paciente();
+        String sql3 = "SELECT SERVICIO_PACIENTE.CORRELATIVO_SERVICIO AS CORRELATIVO, SERVICIO.NOMBRE AS NOMBRE FROM SERVICIO, SERVICIO_PACIENTE, INFORME_PACIENTE WHERE SERVICIO.CODIGO_SERVICIO = SERVICIO_PACIENTE.CODIGO_SERVICIO AND INFORME_PACIENTE.CODIGO_INFORME = SERVICIO_PACIENTE.CODIGO_INFORME AND INFORME_PACIENTE.CODIGO_INFORME = '"+codigo_informe+"'";
+         
+         try {
+            Statement st2 = connection.createStatement();
+            ResultSet rs2 = st2.executeQuery(sql3);
+                    
+            while (rs2.next()){
+                 datos[0] = rs2.getString("CORRELATIVO").trim();
+                 datos[1] = rs2.getString("NOMBRE").trim();
+                 
+                 modelo1.addRow(datos);
+                 
+            }
+            
+            tabla2.setModel(modelo1);
+            int[] anchos = {50, 150, 300};
+           
+            for(int i = 0; i < tabla2.getColumnCount(); i++) {
+                tabla2.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+            }
+                                    
+        } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+        }
+         
+         
+         
+         
+        DefaultTableModel modelo2 = new DefaultTableModel(null, datos2);
+                
+        
+        String datos1[] = new String[2];
+        String correlativo1="";
+        String nombre1="";
+        //Hospital nuevo = new Hospital();
+        //tring codigo_informe = nuevo.getCodigo_informe_paciente();
+        String sql4 = "SELECT SUPLEMENTOS_PACIENTE.CORRELATIVO AS CORRELA, INVENTARIO.NOMBRE AS NAME FROM SUPLEMENTOS_PACIENTE, INVENTARIO, INFORME_PACIENTE WHERE INFORME_PACIENTE.CODIGO_INFORME = SUPLEMENTOS_PACIENTE.CODIGO_INFORME AND SUPLEMENTOS_PACIENTE.CODIGO_INVENTARIO = INVENTARIO.CODIGO_INVENTARIO AND INFORME_PACIENTE.CODIGO_INFORME = '"+codigo_informe+"'";
+         
+         try {
+            Statement st2 = connection.createStatement();
+            ResultSet rs2 = st2.executeQuery(sql4);
+                    
+            while (rs2.next()){
+                 datos1[0] = rs2.getString("CORRELA").trim();
+                 datos1[1] = rs2.getString("NAME").trim();
+                 
+                 modelo2.addRow(datos1);
+                 
+            }
+            
+            tabla1.setModel(modelo2);
+            int[] anchos = {50, 150, 300};
+           
+            for(int i = 0; i < tabla1.getColumnCount(); i++) {
+                tabla1.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+            }
+                                    
+        } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+        } 
+         
+         
+
+    }
+    void llenado(){
+        Connection connection = con.iniciarConexion();
+        Hospital nuevo = new Hospital();
+        
+        String dpi=nuevo.getDpi();
+        
+        String nombre="";
+        String snombre="";
+        String papellido="";
+        String dpi1="";
+        String direccion ="";
+       
+
+        //int ano = fecha.getCalendar().get(Calendar.YEAR);
+         //int mes = fecha.getCalendar().get(Calendar.MONTH) + 1;
+         //int dia = fecha.getCalendar().get(Calendar.DAY_OF_MONTH);
+        
+        
+        String sql3 = "SELECT NOMBRE,SEGUNDO_NOMBRE, PRIMER_APELLIDO, DPI, DIRECCION FROM PERSONA WHERE DPI='"+dpi+"'";
+         
+         try {
+            Statement st2 = connection.createStatement();
+            ResultSet rs2 = st2.executeQuery(sql3);
+                    
+            while (rs2.next()){
+                 nombre = rs2.getString("NOMBRE").trim();
+                 snombre = rs2.getString("SEGUNDO_NOMBRE").trim();
+                 papellido = (rs2.getString("PRIMER_APELLIDO")).trim();
+                 dpi1 = (rs2.getString("DPI")).trim();
+                 direccion = (rs2.getString("DIRECCION")).trim();
+                 
+                 
+            }
+            txt_nombre.setText(nombre+" "+snombre+" "+papellido);
+            txt_dpi.setText(dpi1);
+            txt_direccion.setText(direccion);
+                        
+        } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+        }
+    }
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         // TODO add your handling code here:
         //this.hide();
         exit(0);
     }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void btn_agregar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_agregar1MouseClicked
+        // TODO add your handling code here:
+        Lista_Inventario nuevo = new Lista_Inventario();
+        nuevo.setVisible(true);
+        this.hide();
+        
+    }//GEN-LAST:event_btn_agregar1MouseClicked
+
+    private void btn_agregar2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_agregar2MouseClicked
+        // TODO add your handling code here:
+        Lista_Servicios nuevo =new Lista_Servicios();
+        nuevo.setVisible(true);
+        this.hide();
+    }//GEN-LAST:event_btn_agregar2MouseClicked
+
+    private void tabla1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabla1MouseClicked
+        // TODO add your handling code here:
+        
+        int row=tabla1.getSelectedRow();
+        producto = String.valueOf(tabla1.getValueAt(row, 0));
+    }//GEN-LAST:event_tabla1MouseClicked
+
+    private void btn_eliminar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_eliminar1MouseClicked
+        // TODO add your handling code here:
+        
+        Hospital nuevo = new Hospital();
+        
+        String codigo_informe = nuevo.getCodigo_informe_paciente();
+        
+        Connection connection = con.iniciarConexion();
+         String sql = "DELETE FROM SUPLEMENTOS_PACIENTE WHERE CODIGO_INFORME = '"+codigo_informe+"' AND CORRELATIVO ='"+producto+"' ";
+        
+                
+            
+           // Connection connection = con.iniciarConexion();
+            try {
+                 Statement sta = connection.createStatement();
+                 sta.executeUpdate(sql);
+                 sta.close();
+            } catch (SQLException ex) {
+
+                        JOptionPane.showMessageDialog(null,ex);
+            }
+            JOptionPane.showMessageDialog(null,"Producto Eliminado","Realizado",JOptionPane.INFORMATION_MESSAGE);            
+            producto="";
+            tablas();
+    }//GEN-LAST:event_btn_eliminar1MouseClicked
+
+    private void tabla2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabla2MouseClicked
+        // TODO add your handling code here:
+        int row=tabla2.getSelectedRow();
+        servicio = String.valueOf(tabla2.getValueAt(row, 0));
+        
+    }//GEN-LAST:event_tabla2MouseClicked
+
+    private void btn_eliminar2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_eliminar2MouseClicked
+        // TODO add your handling code here:
+        Hospital nuevo = new Hospital();
+        
+        String codigo_informe = nuevo.getCodigo_informe_paciente();
+        
+        Connection connection = con.iniciarConexion();
+         String sql = "DELETE FROM SERVICIO_PACIENTE WHERE CORRELATIVO_SERVICIO = '"+servicio+"' AND CODIGO_INFORME ='"+codigo_informe+"' ";
+        
+                
+            
+           // Connection connection = con.iniciarConexion();
+            try {
+                 Statement sta = connection.createStatement();
+                 sta.executeUpdate(sql);
+                 sta.close();
+            } catch (SQLException ex) {
+
+                        JOptionPane.showMessageDialog(null,ex);
+            }
+            JOptionPane.showMessageDialog(null,"Servicio Eliminado","Realizado",JOptionPane.INFORMATION_MESSAGE);            
+            servicio="";
+            tablas();
+    }//GEN-LAST:event_btn_eliminar2MouseClicked
 
     /**
      * @param args the command line arguments
@@ -345,8 +586,8 @@ public class Informe_Final extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable tabla1;
+    private javax.swing.JTable tabla2;
     private javax.swing.JTextField txt_direccion;
     private javax.swing.JTextField txt_dpi;
     private javax.swing.JTextField txt_nombre;
