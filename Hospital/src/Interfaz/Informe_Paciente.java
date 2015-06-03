@@ -476,7 +476,7 @@ String codpersona = "";
         String codigo = "";
         String habitaciones = "";
         String cama = "";
-        String dispo="disponible";
+        String dispo="Disponible";
         
         String sql3 = "SELECT CODIGO_HABITACION,HABITACION, CAMA FROM HABITACION WHERE ESATDO = '"+dispo+"'";
          
