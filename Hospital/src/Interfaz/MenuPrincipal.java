@@ -171,7 +171,16 @@ public class MenuPrincipal extends javax.swing.JFrame {
         menu_informe.add(submenu_informepaciente);
 
         submenu_verinforme.setText("Ver Informe");
-        submenu_verinforme.setEnabled(false);
+        submenu_verinforme.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                submenu_verinformeMouseClicked(evt);
+            }
+        });
+        submenu_verinforme.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submenu_verinformeActionPerformed(evt);
+            }
+        });
         menu_informe.add(submenu_verinforme);
 
         Barra_menu.add(menu_informe);
@@ -315,6 +324,16 @@ public class MenuPrincipal extends javax.swing.JFrame {
         Informe_Paciente ver = new Informe_Paciente();
         ver.setVisible(true);
     }//GEN-LAST:event_submenu_informepacienteActionPerformed
+
+    private void submenu_verinformeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submenu_verinformeMouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_submenu_verinformeMouseClicked
+
+    private void submenu_verinformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submenu_verinformeActionPerformed
+        // TODO add your handling code here:
+        new Buscar_Informe_Paciente().setVisible(true);
+    }//GEN-LAST:event_submenu_verinformeActionPerformed
 
     /**
      * @param args the command line arguments

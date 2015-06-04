@@ -7,19 +7,29 @@ package Interfaz;
  */
 
 
+import Conexion.Conexion;
 import Interfaz.*;
 import static java.lang.System.exit;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Calendar;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Douglas
  */
 public class DW extends javax.swing.JFrame {
-
+    Conexion con = new Conexion();
+    String[] datos = {"Nombre del Paciente","Altura","Peso","Servicio"};
+    DefaultTableModel modelo = new DefaultTableModel(null, datos);
     /**
      * Creates new form Citas
      */
@@ -49,14 +59,14 @@ public class DW extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        btnBuscar = new javax.swing.JLabel();
+        DeFecha = new com.toedter.calendar.JDateChooser();
         jLabel12 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        HastaFecha = new com.toedter.calendar.JDateChooser();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TablaRes = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -69,7 +79,12 @@ public class DW extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("De:");
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/search.png"))); // NOI18N
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/search.png"))); // NOI18N
+        btnBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBuscarMouseClicked(evt);
+            }
+        });
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel12.setText("Hasta:");
@@ -82,13 +97,13 @@ public class DW extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(DeFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(HastaFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(jLabel5)
+                .addComponent(btnBuscar)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -96,10 +111,10 @@ public class DW extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
+                    .addComponent(HastaFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscar)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(DeFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel3))
                     .addComponent(jLabel12))
                 .addContainerGap(19, Short.MAX_VALUE))
@@ -117,18 +132,15 @@ public class DW extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TablaRes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(TablaRes);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -189,6 +201,74 @@ public class DW extends javax.swing.JFrame {
         exit(0);
     }//GEN-LAST:event_jLabel2MouseClicked
 
+    private void btnBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseClicked
+        // TODO add your handling code here:
+        Connection connection = con.iniciarConexion();
+        
+        int DeAno = DeFecha.getCalendar().get(Calendar.YEAR);
+        int DeMes = DeFecha.getCalendar().get(Calendar.MONTH) + 1;
+        int DeDia = DeFecha.getCalendar().get(Calendar.DAY_OF_MONTH);
+        
+        int HastaAno = HastaFecha.getCalendar().get(Calendar.YEAR);
+        int HastaMes = HastaFecha.getCalendar().get(Calendar.MONTH) + 1;
+        int HastaDia = HastaFecha.getCalendar().get(Calendar.DAY_OF_MONTH);
+        
+        System.out.println(DeDia+"-"+HastaDia);
+        System.out.println(DeMes+"-"+HastaMes);
+        System.out.println(DeAno+"-"+HastaAno);
+        String Nombre = "";
+        String Apellido = "";
+        
+        String valores[]=new String[5];
+        
+        String sql = "SELECT PERSONA.NOMBRE AS NOMBRE, PERSONA.PRIMER_APELLIDO AS APELLIDO, PACIENTE.ALTURA AS ALTURA, PACIENTE.PESO AS PESO, SERVICIO.NOMBRE AS SERVICIO_NOMBRE FROM PERSONA, PACIENTE, SERVICIO,SERVICIO_PACIENTE, INFORME_PACIENTE WHERE SERVICIO.CODIGO_SERVICIO = SERVICIO_PACIENTE.CODIGO_SERVICIO AND INFORME_PACIENTE.CODIGO_INFORME = SERVICIO_PACIENTE.CODIGO_INFORME AND PACIENTE.CODIGO_PERSONA = PERSONA.CODIGO_PERSONA AND SERVICIO_PACIENTE.DIA >= '"+DeDia+"' AND SERVICIO_PACIENTE.DIA <= '"+HastaDia+"' AND SERVICIO_PACIENTE.MES >= '"+DeMes+"' AND SERVICIO_PACIENTE.MES <= '"+HastaMes+"' AND SERVICIO_PACIENTE.ANO >= '"+DeAno+"' AND SERVICIO_PACIENTE.ANO <= '"+HastaAno+"'";
+        
+            
+           try {
+            Statement st2 = connection.createStatement();
+            ResultSet rs2 = st2.executeQuery(sql);
+                    
+            while (rs2.next()){
+                 Nombre = rs2.getString("NOMBRE").trim();
+                 Apellido = rs2.getString("APELLIDO").trim();
+                 valores[0] = Nombre + " " +Apellido;
+                 valores[1] = rs2.getString("ALTURA");
+                 valores[2] = rs2.getString("PESO");
+                 valores[3] = rs2.getString("SERVICIO_NOMBRE");
+                 modelo.addRow(valores);
+            }
+                        
+        } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+        }
+           
+            TablaRes.setModel(modelo);
+            int[] anchos = {100, 80, 80,100};
+
+            //hacemos un bucle FOR desde cero hasta la cantidad de columnas de nuestra tabla
+
+            for(int i = 0; i < TablaRes.getColumnCount(); i++) {
+                TablaRes.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+            }
+     
+        /*
+        SELECT PERSONA.NOMBRE, PERSONA.PRIMER_APELLIDO, PACIENTE.ALTURA, PACIENTE.PESO, SERVICIO.NOMBRE FROM 
+        PERSONA, PACIENTE, SERVICIO, SERVICIO_PACIENTE, INFORME_PACIENTE WHERE 
+        SERVICIO.CODIGO_SERVICIO = SERVICIO_PACIENTE.CODIGO_SERVICIO AND
+        INFORME_PACIENTE.CODIGO_INFORME = SERVICIO_PACIENTE.CODIGO_INFORME AND
+        PACIENTE.CODIGO_PERSONA = PERSONA.CODIGO_PERSONA AND
+        SERVICIO_PACIENTE.DIA >= 4 AND
+        SERVICIO_PACIENTE.DIA <= 4 AND
+        SERVICIO_PACIENTE.MES >= 6 AND
+        SERVICIO_PACIENTE.MES <= 6 AND
+        SERVICIO_PACIENTE.ANO >= 2015 AND
+        SERVICIO_PACIENTE.ANO <= 2015;
+        */
+        
+        
+        
+    }//GEN-LAST:event_btnBuscarMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -228,16 +308,16 @@ public class DW extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
+    private com.toedter.calendar.JDateChooser DeFecha;
+    private com.toedter.calendar.JDateChooser HastaFecha;
+    private javax.swing.JTable TablaRes;
+    private javax.swing.JLabel btnBuscar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

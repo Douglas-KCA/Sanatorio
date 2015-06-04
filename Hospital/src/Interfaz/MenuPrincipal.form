@@ -122,8 +122,11 @@
             <MenuItem class="javax.swing.JMenuItem" name="submenu_verinforme">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Ver Informe"/>
-                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="submenu_verinformeMouseClicked"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="submenu_verinformeActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
