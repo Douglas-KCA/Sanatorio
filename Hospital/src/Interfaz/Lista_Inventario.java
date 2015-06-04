@@ -76,7 +76,7 @@ public class Lista_Inventario extends javax.swing.JFrame {
         jLabel1.setText("Inventario");
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/close.png"))); // NOI18N
-        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel2MouseClicked(evt);
@@ -103,6 +103,7 @@ public class Lista_Inventario extends javax.swing.JFrame {
 
         lbl_Agregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Plus-32.png"))); // NOI18N
         lbl_Agregar.setText("Agregar");
+        lbl_Agregar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lbl_Agregar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lbl_AgregarMouseClicked(evt);
